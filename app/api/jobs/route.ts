@@ -4,13 +4,12 @@ import db from "../../../src/index";
 import { jobsTable } from "../../../src/db/schema";
 
 const createJobSchema = z.object({
-    title: z.string().min(1, "Title is required"),
-    description: z.string().min(1, "Description is required"),
-    company: z.string().min(1, "Company is required"),
-    location: z.string().min(1, "Location is required"),
-    salary: z.string().min(1, "Salary is required"),
-    contact: z.string().min(1, "Contact is required"),
-})
+  title: z.string().min(1, "Title is required"),
+  company: z.string().min(1, "Company is required"),
+  location: z.string().min(1, "Location is required"),
+  category: z.string().optional(),
+  description: z.string().min(1, "Description is required"),
+});
 
 export async function GET() {
   try {

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import db from "../../../../src/index";
-import { jobsTable } from "../../../../src/db/schema";
+import { jobsTable, applicationsTable } from "../../../../src/db/schema";
 import { z } from "zod";
 
 export async function GET(
@@ -44,8 +44,6 @@ export async function DELETE(
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
-    // TODO: Add admin authentication check here
-
     const [deletedJob] = await db
       .delete(jobsTable)
       .where(eq(jobsTable.id, jobId))
@@ -71,9 +69,8 @@ export async function DELETE(
 const submitJobApplicationSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email format"),
-  phone: z.string().min(1, "Phone number is required"),
-  coverLetter: z.string().optional(),
-  resumeUrl: z.string().url("Invalid URL for resume"),
+  resume_link: z.string().url("Invalid URL for resume"),
+  cover_note: z.string().optional(),
 });
 
 export async function POST(
@@ -91,12 +88,19 @@ export async function POST(
     const body = await request.json();
     const validatedData = submitJobApplicationSchema.parse(body);
 
-    // TODO: Process the job application submission here
-    // This could involve saving the application to a database,
-    // sending an email, etc.
+    const [newApplication] = await db
+      .insert(applicationsTable)
+      .values({
+        job_id: jobId,
+        name: validatedData.name,
+        email: validatedData.email,
+        resume_link: validatedData.resume_link,
+        cover_note: validatedData.cover_note || "",
+      })
+      .returning();
 
     return NextResponse.json(
-      { message: "Job application submitted successfully" },
+      { message: "Job application submitted successfully", application: newApplication },
       { status: 200 },
     );
   } catch (error) {
@@ -106,6 +110,7 @@ export async function POST(
         { status: 400 },
       );
     }
+    console.error("Error submitting application:", error);
     return NextResponse.json(
       { error: "Failed to submit job application" },
       { status: 500 },
