@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import db from "../../../src/index";
-import { jobsTable } from "../../../src/db/schema";
+import db from "@/src/index";
+import { jobsTable } from "@/src/db/schema";
+import { auth } from "@/app/lib/auth";
 
 const createJobSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -28,10 +29,20 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
+    // Better Auth: Protect the route by checking for a session
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized: Authentication required" },
+        { status: 401 },
+      );
+    }
+
     // Validate request body
     const validatedData = createJobSchema.parse(body);
-
-    // TODO: Add admin authentication check here
 
     const [newJob] = await db
       .insert(jobsTable)

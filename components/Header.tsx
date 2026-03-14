@@ -36,12 +36,15 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <a className="text-primary font-semibold px-4 py-2" href="#">
+            <Link
+              className="text-primary font-semibold px-4 py-2"
+              href="/login"
+            >
               Login
-            </a>
+            </Link>
             <a
               className="bg-primary text-white px-6 py-2.5 rounded-md font-semibold hover:bg-indigo-700 transition-colors"
-              href="#"
+              href="/Signup"
             >
               Sign Up
             </a>
