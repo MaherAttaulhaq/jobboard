@@ -8,6 +8,19 @@ import { Button } from "@/components/ui/button";
 import { Mail, Lock, User, ArrowRight, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/app/lib/auth-client";
+import { z } from "zod";
+
+const signupSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Please enter a valid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -18,18 +31,28 @@ const Signup = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<
+    Record<string, string[] | undefined>
+  >({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+    if (fieldErrors[id]) {
+      setFieldErrors((prev) => ({ ...prev, [id]: undefined }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setFieldErrors({});
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+    const validation = signupSchema.safeParse(formData);
+
+    if (!validation.success) {
+      setFieldErrors(validation.error.flatten().fieldErrors);
       setIsLoading(false);
       return;
     }
@@ -92,6 +115,11 @@ const Signup = () => {
                       placeholder="Jane Cooper"
                     />
                   </div>
+                  {fieldErrors.name && (
+                    <p className="text-xs text-red-500 font-medium mt-1 ml-1">
+                      {fieldErrors.name[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -112,6 +140,11 @@ const Signup = () => {
                       placeholder="jane@example.com"
                     />
                   </div>
+                  {fieldErrors.email && (
+                    <p className="text-xs text-red-500 font-medium mt-1 ml-1">
+                      {fieldErrors.email[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -130,6 +163,11 @@ const Signup = () => {
                         placeholder="••••••••"
                       />
                     </div>
+                    {fieldErrors.password && (
+                      <p className="text-xs text-red-500 font-medium mt-1 ml-1">
+                        {fieldErrors.password[0]}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700 ml-1">
@@ -144,6 +182,11 @@ const Signup = () => {
                       className="bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
                       placeholder="••••••••"
                     />
+                    {fieldErrors.confirmPassword && (
+                      <p className="text-xs text-red-500 font-medium mt-1 ml-1">
+                        {fieldErrors.confirmPassword[0]}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
