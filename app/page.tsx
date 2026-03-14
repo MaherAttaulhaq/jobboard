@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <div className="bg-white text-slate-900 font-sans">
-      <header
+      <Header/>
+      {/* <header
         className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100"
         data-purpose="site-navigation"
       >
@@ -48,7 +50,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
 
       <main>
         <section
@@ -822,7 +824,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer
+      {/* <footer
         className="bg-dark text-white pt-24 pb-12"
         data-purpose="site-footer"
       >
@@ -953,7 +955,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </footer>
+      </footer> */}
+      <Footer />
     </div>
   );
 }

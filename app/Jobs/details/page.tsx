@@ -33,17 +33,33 @@ const Detailspage = () => {
     fetchJob();
   }, []);
   return (
-    <div>
+    <div className="container mx-auto py-8">
       {job ? (
-        <>
-          <h1>{job.title}</h1>
-          <p>
-            {job.company} - {job.location}
-          </p>
-          <p>{job.description}</p>
-        </>
+        <div className="bg-gray-100 shadow-md rounded-lg p-8">
+          <h1 className="text-3xl font-semibold text-gray-800 mb-4">
+            {job.title}
+          </h1>
+          <div className="flex items-center mb-2">
+            <span className="text-gray-700 mr-2">Company:</span>
+            <p className="text-gray-800">{job.company}</p>
+          </div>
+          <div className="flex items-center mb-2">
+            <span className="text-gray-700 mr-2">Location:</span>
+            <p className="text-gray-800">{job.location}</p>
+          </div>
+          <div className="flex items-center mb-2">
+            <span className="text-gray-700 mr-2">Created At:</span>
+            <p className="text-gray-800">{job.created_at}</p>
+          </div>
+          <div className="mt-4">
+            <h2 className="text-xl font-semibold text-gray-700 mb-2">
+              Job Description:
+            </h2>
+            <p className="text-gray-800">{job.description}</p>
+          </div>
+        </div>
       ) : (
-        <p>Loading job details...</p>
+        <p className="text-center text-gray-600">Loading job details...</p>
       )}
     </div>
   );
