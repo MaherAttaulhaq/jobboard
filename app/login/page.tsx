@@ -8,28 +8,53 @@ import { Button } from "@/components/ui/button";
 import { Mail, Lock, ArrowRight, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/app/lib/auth-client";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
+  rememberMe: z.boolean().optional(),
+});
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<
+    Record<string, string[] | undefined>
+  >({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+    if (fieldErrors[id]) {
+      setFieldErrors((prev) => ({ ...prev, [id]: undefined }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
+    setFieldErrors({});
+
+    const validation = loginSchema.safeParse(formData);
+
+    if (!validation.success) {
+      setFieldErrors(validation.error.flatten().fieldErrors);
+      setIsLoading(false);
+      return;
+    }
 
     await authClient.signIn.email(
       {
         email: formData.email,
         password: formData.password,
+        rememberMe: formData.rememberMe,
         callbackURL: "/admin", // Redirect here after successful login
       },
       {
@@ -54,7 +79,7 @@ const LoginPage = () => {
             <div className="bg-blue-600 p-3 rounded-2xl shadow-lg shadow-blue-200 mb-4 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
               <Briefcase className="text-white h-8 w-8" />
             </div>
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+            <h2 className="text-3xl font-extrabold text-blue-900 tracking-tight">
               Welcome Back
             </h2>
             <p className="text-gray-500 mt-2 font-medium">
@@ -66,7 +91,7 @@ const LoginPage = () => {
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-gray-700 ml-1">
+                  <label className="text-sm font-bold text-blue-700 ml-1">
                     Email Address
                   </label>
                   <div className="relative">
@@ -83,11 +108,16 @@ const LoginPage = () => {
                       placeholder="jane@example.com"
                     />
                   </div>
+                  {fieldErrors.email && (
+                    <p className="text-xs text-red-500 font-medium mt-1 ml-1">
+                      {fieldErrors.email[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center ml-1">
-                    <label className="text-sm font-bold text-gray-700">
+                    <label className="text-sm font-bold text-blue-700">
                       Password
                     </label>
                     <Link
@@ -111,7 +141,27 @@ const LoginPage = () => {
                       placeholder="••••••••"
                     />
                   </div>
+                  {fieldErrors.password && (
+                    <p className="text-xs text-red-500 font-medium mt-1 ml-1">
+                      {fieldErrors.password[0]}
+                    </p>
+                  )}
                 </div>
+              </div>
+
+              <div className="flex items-center space-x-2 ml-1">
+                <input
+                  id="rememberMe"
+                  type="checkbox"
+                  checked={formData.rememberMe}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, rememberMe: e.target.checked }))
+                  }
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors cursor-pointer"
+                />
+                <label htmlFor="rememberMe" className="text-sm font-medium text-blue-700 cursor-pointer select-none">
+                  Remember me
+                </label>
               </div>
 
               {error && (

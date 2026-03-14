@@ -109,14 +109,14 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
             <div className="p-8">
               <div className="mb-10">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Job Description</h2>
+                <h2 className="text-2xl font-bold text-blue-900 mb-4">Job Description</h2>
                 <div className="prose max-w-none text-gray-600 leading-relaxed font-medium whitespace-pre-line">
                   {job.description || "No description provided."}
                 </div>
               </div>
 
               <div className="border-t border-gray-100 pt-10">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Apply for this Position</h2>
+                <h2 className="text-2xl font-bold text-blue-900 mb-6">Apply for this Position</h2>
                 
                 {submissionStatus === "success" ? (
                   <div className="bg-green-50 border border-green-200 text-green-800 rounded-xl p-6 text-center">
@@ -135,7 +135,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-gray-900"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-blue-900"
                           placeholder="Jane Doe"
                         />
                       </div>
@@ -147,7 +147,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-gray-900"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-blue-900"
                           placeholder="jane@example.com"
                         />
                       </div>
@@ -162,7 +162,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                           required
                           value={formData.resume_link}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-gray-900"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-blue-900"
                           placeholder="https://linkedin.com/in/..."
                         />
                       </div>
@@ -175,7 +175,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
                         rows={4}
                         value={formData.cover_note}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-gray-900 resize-none"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-gray-50 text-blue-900 resize-none"
                         placeholder="Tell us why you're a great fit for this role..."
                       ></textarea>
                     </div>
@@ -198,7 +198,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-800">Job not found</h2>
+            <h2 className="text-2xl font-bold text-blue-800">Job not found</h2>
             <p className="text-gray-500 mt-2">The job you are looking for does not exist or has been removed.</p>
           </div>
         )}

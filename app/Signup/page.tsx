@@ -86,7 +86,7 @@ const Signup = () => {
             <div className="bg-blue-600 p-3 rounded-2xl shadow-lg shadow-blue-200 mb-4 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
               <Briefcase className="text-white h-8 w-8" />
             </div>
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+            <h2 className="text-3xl font-extrabold text-blue-900 tracking-tight">
               Join JobBoard
             </h2>
             <p className="text-gray-500 mt-2 font-medium">
@@ -98,7 +98,7 @@ const Signup = () => {
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-gray-700 ml-1">
+                  <label className="text-sm font-bold text-blue-700 ml-1">
                     Full Name
                   </label>
                   <div className="relative">
@@ -123,7 +123,7 @@ const Signup = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-gray-700 ml-1">
+                  <label className="text-sm font-bold text-blue-700 ml-1">
                     Email Address
                   </label>
                   <div className="relative">
@@ -149,7 +149,7 @@ const Signup = () => {
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-700 ml-1">
+                    <label className="text-sm font-bold text-blue-700 ml-1">
                       Password
                     </label>
                     <div className="relative">
@@ -170,7 +170,7 @@ const Signup = () => {
                     )}
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-gray-700 ml-1">
+                    <label className="text-sm font-bold text-blue-700 ml-1">
                       Confirm
                     </label>
                     <Input

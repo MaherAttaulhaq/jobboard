@@ -90,7 +90,7 @@ const Footer = () => {
               </p>
               <div className="flex">
                 <Input
-                  className="bg-white text-slate-900 border-none rounded-none rounded-l-md w-full px-4 py-3 focus-visible:ring-0 shadow-none"
+                  className="bg-white text-blue-900 border-none rounded-none rounded-l-md w-full px-4 py-3 focus-visible:ring-0 shadow-none"
                   placeholder="Email Address"
                   type="email"
                 />

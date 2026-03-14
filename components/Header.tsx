@@ -14,7 +14,7 @@ const Header = () => {
               <span className="text-white font-bold text-xl">Q</span>
             </div>
             <Link href="/">
-              <span className="text-2xl font-bold tracking-tight text-slate-900">
+              <span className="text-2xl font-bold tracking-tight text-blue-900">
                 QuickHire
               </span>
             </Link>

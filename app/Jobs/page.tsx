@@ -82,7 +82,7 @@ const Jobs = () => {
   const currentJobs = filteredJobs.slice(startIndex, startIndex + jobsPerPage);
   return (
     <>
-     <div className="bg-gray-100 min-h-screen"> <Header /><div className="container mx-auto py-8 px-4"><div className="flex justify-between items-center mb-8"><h1 className="text-2xl font-bold text-gray-900">Job Listings</h1>
+     <div className="bg-gray-100 min-h-screen"> <Header /><div className="container mx-auto py-8 px-4"><div className="flex justify-between items-center mb-8"><h1 className="text-2xl font-bold text-blue-900">Job Listings</h1>
         </div>
 
         {/* Search and Filter Section */}
@@ -90,13 +90,13 @@ const Jobs = () => {
           <Input
             type="text"
             placeholder="Search jobs by title or company..."
-            className="w-full md:w-2/5 text-gray-900 bg-gray-50 border-gray-200 focus-visible:ring-blue-500"
+            className="w-full md:w-2/5 text-blue-900 bg-gray-50 border-gray-200 focus-visible:ring-blue-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="relative w-full md:w-1/4">
             <select
-              className="w-full text-gray-900 bg-gray-50 border-gray-200 border rounded-md h-10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition-colors"
+              className="w-full text-blue-900 bg-gray-50 border-gray-200 border rounded-md h-10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition-colors"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
             >
@@ -114,7 +114,7 @@ const Jobs = () => {
           <Input
             type="text"
             placeholder="Filter by location..."
-            className="w-full md:w-auto flex-1 text-gray-900 bg-gray-50 border-gray-200 focus-visible:ring-blue-500"
+            className="w-full md:w-auto flex-1 text-blue-900 bg-gray-50 border-gray-200 focus-visible:ring-blue-500"
             value={locationFilter}
             onChange={(e) => setLocationFilter(e.target.value)}
           />
@@ -141,32 +141,32 @@ const Jobs = () => {
                 key={job.id}
                 className="bg-gray-200 rounded-lg shadow-md p-5 mb-4 hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between"
               >
-                <h2 className="text-xl font-semibold text-gray-800 mb-2 truncate">
+                <h2 className="text-xl font-semibold text-blue-800 mb-2 truncate">
                   {job.title}
                 </h2>
                 <div className="flex items-center mt-2">
                   <span className="text-gray-700 mr-2 font-semibold">
                     Description:
                   </span>
-                  <p className="text-gray-800">{job.description}</p>
+                  <p className="text-blue-700">{job.description}</p>
                 </div>
                 <div className="flex items-center mt-2">
                   <span className="text-gray-700 mr-2 font-semibold">
                     Created At:
                   </span>
-                  <p className="text-gray-800">{job.created_at}</p>
+                  <p className="text-blue-700">{job.created_at}</p>
                 </div>
                 <div className="flex items-center mt-2">
                   <span className="text-gray-700 mr-2 font-semibold">
                     Location:
                   </span>
-                  <p className="text-gray-800">{job.location}</p>
+                  <p className="text-blue-700">{job.location}</p>
                 </div>
                 <div className="flex items-center mt-2">
                   <span className="text-gray-700 mr-2 font-semibold">
                     Company:
                   </span>
-                  <p className="text-gray-800">{job.company}</p>
+                  <p className="text-blue-700">{job.company}</p>
                 </div>
                 <Link href={`/Jobs/${job.id}`}>
                   <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 w-full mt-4">

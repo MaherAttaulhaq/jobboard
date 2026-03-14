@@ -145,8 +145,8 @@ const AdminPage = () => {
           {/* Dashboard Header */}
           <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
             <div>
-              <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Admin Dashboard</h1>
-              <p className="text-gray-500 mt-2 text-lg">Manage your job board and track candidate applications.</p>
+              <h1 className="text-4xl font-extrabold text-blue-900 tracking-tight">Admin Dashboard</h1>
+              <p className="text-blue-500 mt-2 text-lg">Manage your job board and track candidate applications.</p>
             </div>
             
             <div className="flex bg-white p-1 rounded-xl border border-gray-100 shadow-sm self-start">
@@ -186,12 +186,12 @@ const AdminPage = () => {
                     <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
                       <Plus size={20} />
                     </div>
-                    <h2 className="text-xl font-bold text-gray-900">Add New Job</h2>
+                    <h2 className="text-xl font-bold text-blue-900">Add New Job</h2>
                   </div>
 
                   <form onSubmit={handleAddJob} className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700 ml-1">Job Title</label>
+                      <label className="text-sm font-semibold text-blue-800 ml-1">Job Title</label>
                       <Input
                         id="title"
                         placeholder="e.g. Software Engineer"
@@ -203,7 +203,7 @@ const AdminPage = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700 ml-1">Company</label>
+                      <label className="text-sm font-semibold text-blue-800 ml-1">Company</label>
                       <Input
                         id="company"
                         placeholder="Company Name"
@@ -216,7 +216,7 @@ const AdminPage = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-700 ml-1">Location</label>
+                        <label className="text-sm font-semibold text-blue-800 ml-1">Location</label>
                         <Input
                           id="location"
                           placeholder="Remote"
@@ -227,7 +227,7 @@ const AdminPage = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-700 ml-1">Category</label>
+                        <label className="text-sm font-semibold text-blue-800 ml-1">Category</label>
                         <Input
                           id="category"
                           placeholder="Engineering"
@@ -239,7 +239,7 @@ const AdminPage = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700 ml-1">Description</label>
+                      <label className="text-sm font-semibold text-blue-800 ml-1">Description</label>
                       <Textarea
                         id="description"
                         placeholder="Enter job details..."
@@ -265,8 +265,8 @@ const AdminPage = () => {
               <div className="lg:col-span-2">
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                   <div className="p-6 border-b border-gray-50 flex justify-between items-center bg-white/50 backdrop-blur-sm">
-                    <h2 className="text-xl font-bold text-gray-900">Active Job Listings</h2>
-                    <span className="text-sm font-medium text-gray-400">{jobs.length} total</span>
+                    <h2 className="text-xl font-bold text-blue-900">Active Job Listings</h2>
+                    <span className="text-sm font-medium text-blue-400">{jobs.length} total</span>
                   </div>
                   
                   <div className="divide-y divide-gray-100">
@@ -293,7 +293,7 @@ const AdminPage = () => {
                         <div key={job.id} className="p-6 hover:bg-gray-50 transition-colors group">
                           <div className="flex justify-between items-start">
                             <div className="space-y-2">
-                              <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                              <h3 className="text-lg font-bold text-blue-900 group-hover:text-blue-600 transition-colors">
                                 {job.title}
                               </h3>
                               <div className="flex flex-wrap gap-4 text-sm text-gray-500 font-medium">
@@ -331,8 +331,8 @@ const AdminPage = () => {
           ) : (
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                <div className="p-6 border-b border-gray-50 flex justify-between items-center bg-white/50 backdrop-blur-sm">
-                <h2 className="text-xl font-bold text-gray-900">Candidate Applications</h2>
-                <span className="text-sm font-medium text-gray-400">{applications.length} submitted</span>
+                <h2 className="text-xl font-bold text-blue-900">Candidate Applications</h2>
+                <span className="text-sm font-medium text-blue-400">{applications.length} submitted</span>
               </div>
               
               <div className="overflow-x-auto">
