@@ -29,9 +29,9 @@ const Header = () => {
             </Link>
             <Link
               className="text-slate-600 hover:text-primary font-medium"
-              href="/Companies"
+              href="/admin"
             >
-              Browse Companies
+              Admin
             </Link>
           </nav>
 
