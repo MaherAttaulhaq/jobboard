@@ -168,7 +168,7 @@ const Jobs = () => {
                   </span>
                   <p className="text-blue-700">{job.company}</p>
                 </div>
-                <Link href={`/Jobs/${job.id}`}>
+                <Link href={`/jobs/${job.id}`}>
                   <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 w-full mt-4">
                     View Details
                   </button>

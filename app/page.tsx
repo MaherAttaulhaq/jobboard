@@ -134,7 +134,7 @@ export default function Home() {
                       onChange={(e) => setLocation(e.target.value)}
                     />
                   </div>
-                  <Link href={`/Jobs?query=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`}>
+                  <Link href={`/jobs?query=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`}>
                   <Button
                     className="px-8 py-4 rounded-lg font-bold transition-all hover:scale-105 active:scale-95"
                     size="lg"
@@ -211,7 +211,7 @@ export default function Home() {
               </h2>
               <Link
                 className="text-primary font-semibold flex items-center gap-2 group"
-                href="/Jobs"
+                href="/jobs"
               >
                 Show all jobs{" "}
                 <svg
@@ -565,7 +565,7 @@ export default function Home() {
               </h2>
               <Link
                 className="text-primary font-semibold flex items-center gap-2 group"
-                href="/Jobs"
+                href="/jobs"
               >
                 Show all jobs{" "}
                 <svg
@@ -705,7 +705,7 @@ export default function Home() {
               </h2>
               <Link
                 className="text-primary font-semibold flex items-center gap-2 group"
-                href="/Jobs"
+                href="/jobs"
               >
                 Show all jobs{" "}
                 <svg

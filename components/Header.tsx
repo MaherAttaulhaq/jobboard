@@ -23,7 +23,7 @@ const Header = () => {
           <nav className="hidden md:flex space-x-8">
             <Link
               className="text-slate-600 hover:text-primary font-medium"
-              href="/Jobs"
+              href="/jobs"
             >
               Find Jobs
             </Link>
@@ -42,12 +42,12 @@ const Header = () => {
             >
               Login
             </Link>
-            <a
+            <Link
               className="bg-primary text-white px-6 py-2.5 rounded-md font-semibold hover:bg-indigo-700 transition-colors"
-              href="/Signup"
+              href="/signup"
             >
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
       </div>
