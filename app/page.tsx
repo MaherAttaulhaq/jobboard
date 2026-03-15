@@ -1,5 +1,6 @@
 "use client";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -7,6 +8,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function Home() {
+  const [query, setQuery] = useState("");
+  const [location, setLocation] = useState("");
   const logos = [
     { alt: "Vodafone", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBV2_bfycK-gc9vPahNLYpJ4lc6RejX6m8aTl3LniuEZfZd2c2rcnf5hLDr9sCuZ1YQbufpK5_K1wFLZcXfpWL-jumHCMcE3K2RiQxgKgeNTZz7dQKfaBgb-VMPe3yccFcXkOBoNvY_zg1vMwuA44OTqWcIch7MJCnjl94DtqkpoUnjlPYMDzaQO0F7RqhfQJ6HANxgN5njtbxUxa0RM77GXL_QgLdiYeeyl96xalYjMDXS6j9g6gCauf4p8KCOFHI1qmab7EPIuSo" },
     { alt: "Intel", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuDpS7Jh9iYvSrt-AIYEdPhIYPfSCv9jJ0fv5Oj9Vf3Yyz1lR3cJJETBjmYnxfjWZ6dv6aWlSH31ABuWhk9-g5wdz0Z0LaDmgJDaZbuEf_uN-zP8MoZRNuzpgLY_p-I41JFYPcmXOhrxJSw87G18rkyQLCZmZNsBx9qNKed-C_HvH3IrTygJT3KGC3wkqgnrr3kEU9wPAaCnJEhGu2jvM9-giiCQCXlrhT8fsR5SExhS2v7VAmaHRsFyjDgJsZGQ5ntCfVnpk-yHkl8" },
@@ -14,30 +17,73 @@ export default function Home() {
     { alt: "Talkit", src: "https://lh3.googleusercontent.com/aida-public/AB6AXuB_tUGZ7sRLUQdAg-Buzj-ijsJLeu3TlKvfgUMeioJ7_eeAUNSlrKT2mMoKS6VODVB3lgjiSjQMThCkDe8RWQEZX-dWPbAjSIhnYUeD19hmsTEhXb6mdYXZ2xZnqUdPj6DIHkBTJbWbxaE-dET8YFzqTvGSSGxDUCoqUskDtBIQbD7V2iLiT4b3HpazF3Vx5x2EpQjdKEW_AIvNkzBbVz7ICMWueGZ9orDPBiCZn4ADTGA0-0ZoOUjh-4LZdxdWJ8eg6gqtYsHxYuI" },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1] as const,
+      },
+    },
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 1 },
+    },
+  };
+
   return (
     <div className="bg-white text-blue-900 font-sans">
       <Header />
 
       <main>
-        <section
+        <motion.section
           className="relative overflow-hidden pt-12 lg:pt-20 pb-20 lg:pb-32 bg-secondary"
           data-purpose="hero-banner"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="max-w-2xl">
-                <h1 className="text-5xl lg:text-7xl font-extrabold text-blue-900 leading-tight mb-6">
+                <motion.h1 
+                  variants={itemVariants}
+                  className="text-5xl lg:text-7xl font-extrabold text-blue-900 leading-tight mb-6"
+                >
                   Discover <br /> more than <br />
                   <span className="text-blue-900 highlight-underline">
                     5000+ Jobs
                   </span>
-                </h1>
-                <p className="text-lg text-slate-500 mb-10 leading-relaxed max-w-lg">
+                </motion.h1>
+                <motion.p 
+                  variants={itemVariants}
+                  className="text-lg text-slate-500 mb-10 leading-relaxed max-w-lg"
+                >
                   Great platform for the job seeker that searching for new
                   career heights and passionate about startups.
-                </p>
+                </motion.p>
 
-                <div className="bg-white p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 border border-gray-100">
+                <motion.div 
+                  variants={itemVariants}
+                  className="bg-white p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 border border-gray-100"
+                >
                   <div className="flex-1 flex items-center px-4 border-r border-gray-100">
                     <svg
                       className="w-5 h-5 text-gray-400 mr-3"
@@ -53,9 +99,11 @@ export default function Home() {
                       ></path>
                     </svg>
                     <Input
-                      className="w-full border-none focus-visible:ring-0 text-slate-700 shadow-none"
+                      className="w-full border-none focus-visible:ring-0 text-slate-700 shadow-none outline-none focus:outline-none"
                       placeholder="Job title or keyword"
                       type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
                     />
                   </div>
                   <div className="flex-1 flex items-center px-4">
@@ -78,34 +126,44 @@ export default function Home() {
                         strokeWidth="2"
                       ></path>
                     </svg>
-                    <select className="w-full border-none focus:ring-0 text-slate-700 bg-transparent">
-                      <option>Florence, Italy</option>
-                      <option>New York, USA</option>
-                      <option>London, UK</option>
-                    </select>
+                    <Input
+                      className="w-full border-none focus-visible:ring-0 text-slate-700 shadow-none outline-none focus:outline-none"
+                      placeholder="City, state, or zip code"
+                      type="text"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                    />
                   </div>
+                  <Link href={`/Jobs?query=${encodeURIComponent(query)}&location=${encodeURIComponent(location)}`}>
                   <Button
-                    className="px-8 py-4 rounded-lg font-bold transition-all"
+                    className="px-8 py-4 rounded-lg font-bold transition-all hover:scale-105 active:scale-95"
                     size="lg"
                   >
                     Search my job
                   </Button>
-                </div>
-                <p className="mt-4 text-sm text-slate-400">
+                  </Link>
+                </motion.div>
+                <motion.p 
+                  variants={itemVariants}
+                  className="mt-4 text-sm text-slate-400"
+                >
                   Popular : UI Designer, UX Researcher, Android, Admin
-                </p>
+                </motion.p>
               </div>
 
-              <div className="relative hidden lg:block">
+              <motion.div 
+                variants={fadeIn}
+                className="relative hidden lg:block"
+              >
                 <img
                   alt="Professional worker"
-                  className="w-full h-auto object-contain rounded-2xl"
+                  className="w-full h-auto object-contain rounded-2xl shadow-2xl"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXotk_A6jfEdDrIX0NAIW3oKnzUm399LxFw8GsAnODmHRFmm8U_bG77K_ccQqUr1hFVJbGFM0bP92etLLgEfQkSVJ2PjHxNLrn8E_Xi7h6HhsfxxFlA0WBuaRKnuteXUB9eAMt5ycKYHSixXLVe1VcvCmHsGLP5QD5BejAuCIMrEV9N8WxNI7EZH4DOQrPLQdf5CFWfvuclIz18E9rzy_2PAi4KkiebJj3hqck9ZYvZK9lc4DDIszKhehb1K41LSsYx0n-Znwuqso"
                 />
-              </div>
+              </motion.div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <section
           className="py-12 border-b border-gray-100 overflow-hidden"
@@ -138,19 +196,26 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-24" data-purpose="job-categories">
+        <motion.section 
+          className="py-24" 
+          data-purpose="job-categories"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-end mb-12">
+            <motion.div variants={itemVariants} className="flex justify-between items-end mb-12">
               <h2 className="text-4xl font-bold text-blue-900">
-                Explore by <span className="text-blue-900">category</span>
+                Explore by <span className="text-secondary-foreground underline decoration-primary/30">category</span>
               </h2>
-              <a
-                className="text-blue-900 font-semibold flex items-center gap-2"
-                href="#"
+              <Link
+                className="text-primary font-semibold flex items-center gap-2 group"
+                href="/Jobs"
               >
                 Show all jobs{" "}
                 <svg
-                  className="w-4 h-4"
+                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -162,11 +227,11 @@ export default function Home() {
                     strokeWidth="2"
                   ></path>
                 </svg>
-              </a>
-            </div>
+              </Link>
+            </motion.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
+                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -198,9 +263,9 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
-              <div className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary">
+              </motion.div>
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
+                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -232,9 +297,9 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
-              <div className="p-8 bg-primary text-white rounded-xl shadow-xl transition-all cursor-pointer scale-105 z-10">
-                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-6">
+              </motion.div>
+              <motion.div variants={itemVariants} className="p-8 bg-primary text-white rounded-xl shadow-xl transition-all cursor-pointer hover:-translate-y-2 z-10 group">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-primary transition-all">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -266,9 +331,9 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
-              <div className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary">
+              </motion.div>
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
+                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -300,10 +365,10 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
+                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -335,9 +400,9 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
-              <div className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary">
+              </motion.div>
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
+                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -369,9 +434,9 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
-              <div className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary">
+              </motion.div>
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
+                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -403,9 +468,9 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
-              <div className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary">
+              </motion.div>
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
+                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -437,56 +502,74 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <section
+        <motion.section
           className="max-w-7xl mx-auto px-4 mb-24"
           data-purpose="cta-banner"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
         >
-          <div className="bg-primary rounded-3xl overflow-hidden flex flex-col lg:flex-row items-center">
-            <div className="p-12 lg:p-20 flex-1">
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+          <div className="bg-primary rounded-3xl overflow-hidden flex flex-col lg:flex-row items-center border border-white/10 shadow-2xl">
+            <motion.div 
+              className="p-12 lg:p-20 flex-1"
+              variants={containerVariants}
+            >
+              <motion.h2 variants={itemVariants} className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                 Start posting <br /> jobs today
-              </h2>
-              <p className="text-indigo-100 text-lg mb-10">
+              </motion.h2>
+              <motion.p variants={itemVariants} className="text-indigo-100 text-lg mb-10">
                 Start posting jobs for only $10.
-              </p>
-              <Button
-                className="bg-white text-primary px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition-colors"
-                size="lg"
-              >
-                Sign Up For Free
-              </Button>
-            </div>
-            <div className="flex-1 w-full lg:w-1/2 p-12 lg:pr-0">
+              </motion.p>
+              <motion.div variants={itemVariants}>
+                <Button
+                  className="bg-white text-primary px-10 py-6 rounded-xl font-bold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-lg"
+                  size="lg"
+                >
+                  Sign Up For Free
+                </Button>
+              </motion.div>
+            </motion.div>
+            <motion.div 
+              className="flex-1 w-full lg:w-1/2 p-12 lg:pr-0"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               <img
                 alt="Dashboard Preview"
-                className="rounded-tl-2xl shadow-2xl translate-x-12 translate-y-12 lg:translate-y-0"
+                className="rounded-tl-2xl shadow-2xl translate-x-12 translate-y-12 lg:translate-y-0 group-hover:scale-105 transition-transform duration-500"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvsIwRBe96vTjoQuzscagKaV6UoYukNX6f78Gapiuu5hz818ZzapEmNSVCMAOkwIQi-Ag_8wPonhvvsc287dZKuzsHnUiGYN1l9ZsufCoAojNbASg-aUCQEafeTBan--K_KqaKA2DmjVx_hNd0RIP7JCFvNyTsIG_6nJl0j-w1PX2spO6620ntHOwAgBy-3yx6XU1d-_Qzft9whQH6prbypzWn96dS1SMUUvPA_iQyMJ67kj1NyBCLvOVzpwNTQJYytTVt7WbS-80"
               />
-            </div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
-        <section
+        <motion.section
           className="py-24 bg-gray-50/50"
           data-purpose="featured-job-listings"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
         >
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-end mb-12">
+            <motion.div variants={itemVariants} className="flex justify-between items-end mb-12">
               <h2 className="text-4xl font-bold text-blue-900">
-                Featured <span className="text-primary">jobs</span>
+                Featured <span className="text-primary underline decoration-primary/20">jobs</span>
               </h2>
-              <a
-                className="text-primary font-semibold flex items-center gap-2"
-                href="#"
+              <Link
+                className="text-primary font-semibold flex items-center gap-2 group"
+                href="/Jobs"
               >
                 Show all jobs{" "}
                 <svg
-                  className="w-4 h-4"
+                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -498,10 +581,10 @@ export default function Home() {
                     strokeWidth="2"
                   ></path>
                 </svg>
-              </a>
-            </div>
+              </Link>
+            </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white p-6 rounded-xl border border-gray-100 card-shadow">
+              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Revolut"
@@ -527,8 +610,8 @@ export default function Home() {
                     Design
                   </span>
                 </div>
-              </div>
-              <div className="bg-white p-6 rounded-xl border border-gray-100 card-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Dropbox"
@@ -554,8 +637,8 @@ export default function Home() {
                     Business
                   </span>
                 </div>
-              </div>
-              <div className="bg-white p-6 rounded-xl border border-gray-100 card-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Pitch"
@@ -578,8 +661,8 @@ export default function Home() {
                     Marketing
                   </span>
                 </div>
-              </div>
-              <div className="bg-white p-6 rounded-xl border border-gray-100 card-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Blinklist"
@@ -602,24 +685,31 @@ export default function Home() {
                     Design
                   </span>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <section className="py-24" data-purpose="latest-job-list">
+        <motion.section 
+          className="py-24" 
+          data-purpose="latest-job-list"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-end mb-12">
+            <motion.div variants={itemVariants} className="flex justify-between items-end mb-12">
               <h2 className="text-4xl font-bold text-blue-900">
-                Latest <span className="text-primary">jobs open</span>
+                Latest <span className="text-primary underline decoration-primary/20">jobs open</span>
               </h2>
-              <a
-                className="text-primary font-semibold flex items-center gap-2"
-                href="#"
+              <Link
+                className="text-primary font-semibold flex items-center gap-2 group"
+                href="/Jobs"
               >
                 Show all jobs{" "}
                 <svg
-                  className="w-4 h-4"
+                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -631,10 +721,10 @@ export default function Home() {
                     strokeWidth="2"
                   ></path>
                 </svg>
-              </a>
-            </div>
+              </Link>
+            </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
                 <img
                   alt="Nomad"
                   className="w-12 h-12 rounded-lg mr-6"
@@ -657,8 +747,8 @@ export default function Home() {
                     Design
                   </span>
                 </div>
-              </div>
-              <div className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
                 <img
                   alt="Netlify"
                   className="w-12 h-12 rounded-lg mr-6"
@@ -681,8 +771,8 @@ export default function Home() {
                     Design
                   </span>
                 </div>
-              </div>
-              <div className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
                 <img
                   alt="Dropbox"
                   className="w-12 h-12 rounded-lg mr-6"
@@ -705,8 +795,8 @@ export default function Home() {
                     Design
                   </span>
                 </div>
-              </div>
-              <div className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
                 <img
                   alt="Maze"
                   className="w-12 h-12 rounded-lg mr-6"
@@ -729,8 +819,8 @@ export default function Home() {
                     Design
                   </span>
                 </div>
-              </div>
-              <div className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
                 <img
                   alt="Terraform"
                   className="w-12 h-12 rounded-lg mr-6"
@@ -753,8 +843,8 @@ export default function Home() {
                     Design
                   </span>
                 </div>
-              </div>
-              <div className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+              </motion.div>
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
                 <img
                   alt="Udacity"
                   className="w-12 h-12 rounded-lg mr-6"
@@ -777,10 +867,10 @@ export default function Home() {
                     Design
                   </span>
                 </div>
+              </motion.div>
               </div>
-            </div>
           </div>
-        </section>
+        </motion.section>
       </main>
 
       <Footer />
