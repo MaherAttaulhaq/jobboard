@@ -2,8 +2,9 @@ import { auth } from "@/app/lib/auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import db from "@/src/index";
-import { usersTable } from "@/src/db/schema";
+import { user, account } from "@/auth-schema";
 import { hashPassword } from "@/app/lib/password";
+import { randomUUID } from "crypto";
 
 // Schema for validating user signup data
 const signupSchema = z.object({
@@ -27,7 +28,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const users = await db.select().from(usersTable);
+    const users = await db.select().from(user);
     return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json(
@@ -59,15 +60,33 @@ export async function POST(request: Request) {
     // 3. Manual Hashing with bcrypt
     const hashedPassword = await hashPassword(validatedData.password);
 
+    const userId = randomUUID();
+    const now = new Date();
+
     // 4. Manual Database Insertion using Drizzle
     const [newUser] = await db
-      .insert(usersTable)
+      .insert(user)
       .values({
+        id: userId,
         name: validatedData.name,
         email: validatedData.email,
-        password: hashedPassword,
+        emailVerified: false,
+        image: validatedData.image,
+        createdAt: now,
+        updatedAt: now,
       })
       .returning();
+
+    // Create account record for credentials
+    await db.insert(account).values({
+      id: randomUUID(),
+      userId: userId,
+      accountId: validatedData.email,
+      providerId: "credential",
+      password: hashedPassword,
+      createdAt: now,
+      updatedAt: now,
+    });
 
     return NextResponse.json(
       { id: newUser.id, name: newUser.name, email: newUser.email },
