@@ -1,5 +1,6 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm/_relations";
+import { user as authUserTable } from "../../auth-schema";
 
 export const jobsTable = sqliteTable("jobs", {
   id: int().primaryKey({ autoIncrement: true }),
@@ -17,14 +18,6 @@ export const jobsTable = sqliteTable("jobs", {
   created_at: text().default("CURRENT_TIMESTAMP"),
 });
 
-// This table is referenced in your seed script but was missing from the schema.
-export const usersTable = sqliteTable("users", {
-  id: int().primaryKey({ autoIncrement: true }),
-  name: text().notNull(),
-  email: text().notNull().unique(),
-  password: text().notNull(),
-});
-
 export const applicationsTable = sqliteTable("applications", {
   id: int().primaryKey({ autoIncrement: true }),
 
@@ -32,7 +25,8 @@ export const applicationsTable = sqliteTable("applications", {
     .notNull()
     .references(() => jobsTable.id),
 
-  userId: int("user_id").references(() => usersTable.id),
+  // Use the user table from the auth schema
+  userId: text("user_id").references(() => authUserTable.id),
 
   name: text().notNull(),
 
@@ -50,10 +44,6 @@ export const jobsRelations = relations(jobsTable, ({ many }) => ({
   applications: many(applicationsTable),
 }));
 
-export const usersRelations = relations(usersTable, ({ many }) => ({
-  applications: many(applicationsTable),
-}));
-
 export const applicationsRelations = relations(
   applicationsTable,
   ({ one }) => ({
@@ -61,9 +51,9 @@ export const applicationsRelations = relations(
       fields: [applicationsTable.job_id],
       references: [jobsTable.id],
     }),
-    user: one(usersTable, {
+    user: one(authUserTable, {
       fields: [applicationsTable.userId],
-      references: [usersTable.id],
+      references: [authUserTable.id],
     }),
   }),
 );

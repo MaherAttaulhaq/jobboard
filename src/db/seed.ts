@@ -1,5 +1,5 @@
 import db from "../index";
-import { applicationsTable, jobsTable, usersTable } from "./schema";
+import { applicationsTable, jobsTable } from "./schema";
 
 async function seed() {
   console.log("Seeding database...");
@@ -57,21 +57,8 @@ async function seed() {
   await db.insert(applicationsTable).values(applications);
   console.log(`Inserted ${applications.length} applications.`);
 
-  const users = [
-    {
-      name: "Admin User",
-      email: "admin@jobboard.com",
-      password: "password123", // In a real app, this should be hashed
-    },
-    {
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      password: "securepassword",
-    },
-  ];
-
-  await db.insert(usersTable).values(users);
-  console.log(`Inserted ${users.length} users.`);
+  // User seeding has been removed.
+  // The new auth schema is more complex and requires a proper user creation flow (e.g., with password hashing).
 
   console.log("Seeding complete!");
 }
