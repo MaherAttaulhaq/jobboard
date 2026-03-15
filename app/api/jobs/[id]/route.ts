@@ -71,7 +71,7 @@ const submitJobApplicationSchema = z.object({
   email: z.string().email("Invalid email format"),
   resume_link: z.string().url("Invalid URL for resume"),
   cover_note: z.string().optional(),
-  userId: z.coerce.number().optional(),
+  userId: z.string().optional(),
 });
 
 export async function POST(
