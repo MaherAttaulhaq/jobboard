@@ -145,7 +145,7 @@ export default function Home() {
                 Explore by <span className="text-blue-900">category</span>
               </h2>
               <a
-                className="text-primary font-semibold flex items-center gap-2"
+                className="text-blue-900 font-semibold flex items-center gap-2"
                 href="#"
               >
                 Show all jobs{" "}
