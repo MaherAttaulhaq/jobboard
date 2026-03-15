@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { use } from "react";
+import { authClient } from "@/app/lib/auth-client";
 
 interface Job {
   id: number;
@@ -18,6 +19,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const unwrappedParams = use(params);
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
+  const { data: session } = authClient.useSession();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,6 +29,17 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [submissionStatus, setSubmissionStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
+
+  // Pre-fill form if user is logged in
+  useEffect(() => {
+    if (session?.user) {
+      setFormData(prev => ({
+        ...prev,
+        name: prev.name || session.user.name || "",
+        email: prev.email || session.user.email || "",
+      }));
+    }
+  }, [session]);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -58,7 +71,10 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
       const response = await fetch(`/api/jobs/${unwrappedParams.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          userId: session?.user?.id,
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to submit application");

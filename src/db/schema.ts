@@ -15,12 +15,15 @@ export const jobsTable = sqliteTable("jobs", {
 
   created_at: text().default("CURRENT_TIMESTAMP"),
 });
+
 export const applicationsTable = sqliteTable("applications", {
   id: int().primaryKey({ autoIncrement: true }),
 
   job_id: int()
     .notNull()
     .references(() => jobsTable.id),
+
+  userId: text("user_id"), // link to better-auth user id
 
   name: text().notNull(),
 
@@ -29,18 +32,6 @@ export const applicationsTable = sqliteTable("applications", {
   resume_link: text(),
 
   cover_note: text(),
-
-  created_at: text().default("CURRENT_TIMESTAMP"),
-});
-
-export const usersTable = sqliteTable("users", {
-  id: int().primaryKey({ autoIncrement: true }),
-
-  name: text().notNull(),
-
-  email: text().notNull().unique(),
-
-  password: text().notNull(),
 
   created_at: text().default("CURRENT_TIMESTAMP"),
 });
