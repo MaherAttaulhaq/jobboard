@@ -15,6 +15,13 @@
       "when": 1773494429225,
       "tag": "0001_cold_calypso",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1773560956106,
+      "tag": "0002_lazy_mephisto",
+      "breakpoints": true
     }
   ]
 }
