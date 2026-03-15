@@ -1,16 +1,15 @@
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/libsql";
-import { createClient } from "@libsql/client";
+import { Database } from "@sqlitecloud/drivers";
+import { drizzle } from "drizzle-orm/sqlite-cloud";
 
-const dbUrl = process.env.DB_FILE_NAME!;
-// Handle local file paths by prepending "file:" if a protocol is missing
-const url =
-  dbUrl.includes("://") || dbUrl.startsWith("file:") ? dbUrl : `file:${dbUrl}`;
+const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
 
-const client = createClient({
-  url,
-  authToken: process.env.DB_AUTH_TOKEN, // only needed for remote Turso DB
-});
+if (!connectionString) {
+  throw new Error(
+    "SQLITE_CLOUD_CONNECTION_STRING environment variable is not set.",
+  );
+}
 
-const db = drizzle(client);
+const client = new Database(connectionString);
+const db = drizzle({ client });
 export default db;

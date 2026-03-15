@@ -1,25 +1,18 @@
 import "dotenv/config";
-import { migrate } from "drizzle-orm/libsql/migrator";
-import { drizzle } from "drizzle-orm/libsql";
-import { createClient } from "@libsql/client";
+import { migrate } from "drizzle-orm/sqlite-cloud/migrator";
+import { drizzle } from "drizzle-orm/sqlite-cloud";
+import { Database } from "@sqlitecloud/drivers";
 
 async function main() {
-  const dbUrl = process.env.DB_FILE_NAME;
-  if (!dbUrl) {
-    throw new Error("DB_FILE_NAME environment variable is not set.");
+  const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
+  if (!connectionString) {
+    throw new Error(
+      "SQLITE_CLOUD_CONNECTION_STRING environment variable is not set.",
+    );
   }
 
-  // Handle local file paths by prepending "file:" if a protocol is missing
-  const url =
-    dbUrl.includes("://") || dbUrl.startsWith("file:")
-      ? dbUrl
-      : `file:${dbUrl}`;
-
-  const client = createClient({
-    url,
-    authToken: process.env.DB_AUTH_TOKEN,
-  });
-  const db = drizzle(client);
+  const client = new Database(connectionString);
+  const db = drizzle({ client });
 
   console.log("Running migrations...");
 
