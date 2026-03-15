@@ -2,7 +2,7 @@ import { auth } from "@/app/lib/auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import db from "@/src/index";
-import { usersTable } from "@/src/db/schema";
+import { user, account } from "@/auth-schema";
 import { hashPassword } from "@/app/lib/password";
 import { eq } from "drizzle-orm";
 
@@ -25,24 +25,19 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const userId = parseInt(id);
 
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const [user] = await db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.id, userId));
+    const [foundUser] = await db.select().from(user).where(eq(user.id, id));
 
-    if (!user) {
+    if (!foundUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const { password, ...userWithoutPassword } = user;
-    return NextResponse.json(userWithoutPassword);
+    return NextResponse.json(foundUser);
   } catch (error) {
     return NextResponse.json(
       { error: "Internal Server Error" },
@@ -60,7 +55,6 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const userId = parseInt(id);
 
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session) {
@@ -70,23 +64,32 @@ export async function PUT(
     const body = await request.json();
     const validatedData = updateUserSchema.parse(body);
 
-    const updateValues: any = { ...validatedData };
-    if (validatedData.password) {
-      updateValues.password = await hashPassword(validatedData.password);
+    // Separate password from other user data
+    const { password, ...userProfileData } = validatedData;
+
+    // Update user profile info if present
+    if (Object.keys(userProfileData).length > 0) {
+      await db.update(user).set(userProfileData).where(eq(user.id, id));
     }
 
-    const [updatedUser] = await db
-      .update(usersTable)
-      .set(updateValues)
-      .where(eq(usersTable.id, userId))
-      .returning();
+    // Update password if present
+    if (password) {
+      const hashedPassword = await hashPassword(password);
+      await db
+        .update(account)
+        .set({ password: hashedPassword })
+        .where(eq(account.userId, id));
+    }
+
+    // Fetch the updated user to return
+    const [updatedUser] = await db.select().from(user).where(eq(user.id, id));
 
     if (!updatedUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const { password, ...userWithoutPassword } = updatedUser;
-    return NextResponse.json(userWithoutPassword);
+    // The user object from the 'user' table is safe to return
+    return NextResponse.json(updatedUser);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -110,7 +113,6 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const userId = parseInt(id);
 
     const session = await auth.api.getSession({ headers: request.headers });
     if (!session) {
@@ -118,8 +120,8 @@ export async function DELETE(
     }
 
     const [deletedUser] = await db
-      .delete(usersTable)
-      .where(eq(usersTable.id, userId))
+      .delete(user)
+      .where(eq(user.id, id))
       .returning();
 
     if (!deletedUser) {
