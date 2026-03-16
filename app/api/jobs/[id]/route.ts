@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import db from "../../../../src/index";
-import { jobsTable, applicationsTable } from "../../../../src/db/schema";
+import db from "@/src/index";
+import { jobsTable, applicationsTable } from "@/src/db/schema";
 import { z } from "zod";
 
 export async function GET(
