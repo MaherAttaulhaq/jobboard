@@ -4,12 +4,7 @@ import db from "@/src/index";
 import { jobsTable } from "@/src/db/schema";
 import { auth } from "@/app/lib/auth";
 
-// This forces the route to be dynamic, preventing it from being statically optimized.
-// Vercel's build environment might not have access to the database, causing a build
-// failure if Next.js tries to fetch data at build time. By forcing it to be dynamic,
-// we ensure the database query only runs at request time in the deployed environment,
-// which should resolve the 404 error for this API route.
-export const dynamic = "force-dynamic";
+
 
 const createJobSchema = z.object({
   title: z.string().min(1, "Title is required"),
