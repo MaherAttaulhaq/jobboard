@@ -14,33 +14,42 @@ interface Job {
   created_at?: string;
 }
 
-const Jobs = () => {
+export default function JobsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 6;
   const [searchTerm, setSearchTerm] = useState("");
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
   const [locationFilter, setLocationFilter] = useState("");
 
   useEffect(() => {
     const fetchJobs = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const jobsResponse = await fetch(`/api/jobs`);
         if (!jobsResponse.ok) {
-          throw new Error("Failed to fetch jobs");
+          throw new Error(
+            `Failed to fetch jobs. Status: ${jobsResponse.status}`,
+          );
         }
         const jobsData: Job[] = await jobsResponse.json();
 
         let categoriesData: string[] = [];
         try {
           const categoriesResponse = await fetch("/api/categories");
-          if (categoriesResponse.ok) {
-            categoriesData = await categoriesResponse.json();
-          }
+          if (!categoriesResponse.ok)
+            throw new Error(`Status: ${categoriesResponse.status}`);
+          categoriesData = await categoriesResponse.json();
         } catch (catError) {
-          console.warn("Categories API unavailable");
+          // This is not critical, so we can just warn and continue.
+          console.warn(
+            "Could not fetch categories, falling back to derived categories.",
+            catError,
+          );
         }
 
         const derivedCategories = Array.from(
@@ -50,9 +59,12 @@ const Jobs = () => {
           categoriesData.length > 0 ? categoriesData : derivedCategories,
         );
         setJobs(jobsData);
-        setLoading(false);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error fetching jobs:", error);
+        setError(
+          error.message || "An unexpected error occurred while fetching jobs.",
+        );
+      } finally {
         setLoading(false);
       }
     };
@@ -212,6 +224,22 @@ const Jobs = () => {
                   <div className="h-10 bg-gray-200 rounded w-full mt-6"></div>
                 </div>
               ))}
+            </div>
+          ) : error ? (
+            <div className="col-span-full text-center py-16 bg-white rounded-xl shadow-sm border border-red-200">
+              <h3 className="text-xl font-bold text-red-600">
+                Oops! Something went wrong.
+              </h3>
+              <p className="mt-2 text-gray-600">
+                We couldn't load the job listings.
+              </p>
+              <p className="mt-4 text-sm text-gray-500 bg-gray-100 inline-block px-3 py-1 rounded">
+                Error: {error}
+              </p>
+              <p className="mt-4 text-sm text-gray-500">
+                This might be an issue with our API. Please try again later. If
+                the problem persists, check the Vercel function logs.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -393,6 +421,4 @@ const Jobs = () => {
       </div>
     </>
   );
-};
-
-export default Jobs;
+}
