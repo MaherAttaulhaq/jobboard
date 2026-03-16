@@ -1,5 +1,5 @@
 import db from "../index";
-import { applicationsTable, jobsTable } from "./schema";
+import { applicationsTable, jobsTable, categoriesTable } from "./schema";
 
 async function seed() {
   console.log("Seeding database...");
@@ -59,6 +59,20 @@ async function seed() {
 
   // User seeding has been removed.
   // The new auth schema is more complex and requires a proper user creation flow (e.g., with password hashing).
+
+  console.log("Seeding categories...");
+  const categories = [
+    { name: "Engineering" },
+    { name: "Marketing" },
+    { name: "Design" },
+    { name: "Product" },
+    { name: "Sales" },
+    { name: "Support" },
+    { name: "Human Resources" },
+  ];
+
+  await db.insert(categoriesTable).values(categories).onConflictDoNothing();
+  console.log("Categories seeding complete.");
 
   console.log("Seeding complete!");
 }

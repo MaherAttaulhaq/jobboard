@@ -2,6 +2,11 @@ import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm/_relations";
 import { user as authUserTable } from "../../auth-schema";
 
+export const categoriesTable = sqliteTable("categories", {
+  id: int("id").primaryKey({ autoIncrement: true }),
+  name: text("name").notNull().unique(),
+});
+
 export const jobsTable = sqliteTable("jobs", {
   id: int().primaryKey({ autoIncrement: true }),
 
