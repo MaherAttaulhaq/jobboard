@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { use } from "react";
 import { authClient } from "@/app/lib/auth-client";
 
 interface Job {
@@ -16,7 +15,9 @@ interface Job {
 }
 
 const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
-  const unwrappedParams = use(params);
+  const [unwrappedParams, setUnwrappedParams] = useState<{ id: string } | null>(
+    null,
+  );
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const { data: session } = authClient.useSession();
@@ -42,6 +43,12 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   }, [session]);
 
   useEffect(() => {
+    // Unwrap params safely for both Next.js 15 (Promise) and 14 (Object) compatibility
+    Promise.resolve(params).then(setUnwrappedParams);
+  }, [params]);
+
+  useEffect(() => {
+    if (!unwrappedParams) return;
     const fetchJob = async () => {
       try {
         const response = await fetch(`/api/jobs/${unwrappedParams.id}`);
@@ -55,7 +62,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
       }
     };
     fetchJob();
-  }, [unwrappedParams.id]);
+  }, [unwrappedParams]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -65,6 +72,7 @@ const JobDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!unwrappedParams) return;
     setSubmissionStatus("submitting");
 
     try {
