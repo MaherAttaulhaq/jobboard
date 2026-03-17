@@ -62,6 +62,24 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Deployment on Vercel
+
+The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
+
+### Running Database Migrations
+
+This project uses Drizzle ORM for database migrations. When deploying to Vercel, you must ensure that the database migration command runs before the build command.
+
+1.  In your Vercel project settings, go to **Settings** > **General**.
+2.  Under **Build & Development Settings**, override the **Build Command**.
+3.  Set the command to:
+
+    ```bash
+    npm run db:migrate && next build
+    ```
+
+This will connect to your production database (using the `SQLITE_CLOUD_CONNECTION_STRING` environment variable), apply any pending migrations, and then build the application.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

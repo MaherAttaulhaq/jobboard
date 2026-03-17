@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
@@ -14,16 +15,20 @@ interface Job {
   created_at?: string;
 }
 
-export default function JobsPage() {
+function JobsContent() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("query") || "";
+  const initialLocation = searchParams.get("location") || "";
+
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 6;
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
-  const [locationFilter, setLocationFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState(initialLocation);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -37,6 +42,9 @@ export default function JobsPage() {
           );
         }
         const jobsData: Job[] = await jobsResponse.json();
+        if (!Array.isArray(jobsData)) {
+          throw new Error("Received invalid data from server");
+        }
 
         // Derive categories from the jobs data
         const derivedCategories = Array.from(
@@ -406,5 +414,13 @@ export default function JobsPage() {
         <Footer />
       </div>
     </>
+  );
+}
+
+export default function JobsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <JobsContent />
+    </Suspense>
   );
 }
