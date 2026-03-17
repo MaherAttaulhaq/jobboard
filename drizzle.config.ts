@@ -1,10 +1,12 @@
-import type { Config } from "drizzle-kit";
+import 'dotenv/config';
+import { defineConfig } from 'drizzle-kit';
 
-export default {
-  schema: "./src/db/schema.ts", // Adjust path to your schema file
-  out: "./drizzle",
-  dialect: "sqlite",
+export default defineConfig({
+  out: './drizzle',
+  schema: './src/db/schema.ts',
+  dialect: 'sqlite',
   dbCredentials: {
-    url: "sqlite.db", // This will be the name of your local database file
+    url: process.env.SQLITE_CLOUD_CONNECTION_STRING!,
   },
-} as Config;
+});
+

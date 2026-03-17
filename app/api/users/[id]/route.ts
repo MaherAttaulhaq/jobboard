@@ -1,128 +1,144 @@
-import { auth } from "@/app/lib/auth";
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import db from "@/src/index";
-import { user, account } from "@/auth-schema";
-import { hashPassword } from "@/app/lib/password";
+import { user as usersTable } from "../../../../auth-schema";
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 
-// Schema for validating partial user updates
-const updateUserSchema = z.object({
-  name: z.string().min(2, "Name is too short").optional(),
-  email: z.string().email("Invalid email address").optional(),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .optional(),
+const paramsSchema = z.object({
+  id: z.string().min(1, { message: "User ID cannot be empty." }),
 });
 
-/**
- * GET: Fetch a specific user by ID
- */
+const updateUserSchema = z.object({
+  name: z.string().min(1, "Name is required").optional(),
+  image: z.string().nullable().optional(),
+});
+
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: { id: string } },
 ) {
   try {
-    const { id } = await params;
+    const validation = paramsSchema.safeParse(params);
 
-    const session = await auth.api.getSession({ headers: request.headers });
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!validation.success) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          details: validation.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
     }
+    const { id } = validation.data;
 
-    const [foundUser] = await db.select().from(user).where(eq(user.id, id));
+    // Select specific fields to avoid exposing sensitive data like password hashes
+    const [user] = await db
+      .select({
+        id: usersTable.id,
+        name: usersTable.name,
+        email: usersTable.email,
+        image: usersTable.image,
+      })
+      .from(usersTable)
+      .where(eq(usersTable.id, id));
 
-    if (!foundUser) {
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(foundUser);
+    return NextResponse.json(user);
   } catch (error) {
+    console.error("Error fetching user:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to fetch user" },
       { status: 500 },
     );
   }
 }
 
-/**
- * PUT: Update a specific user by ID
- */
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: { id: string } },
 ) {
   try {
-    const { id } = await params;
+    const paramsValidation = paramsSchema.safeParse(params);
 
-    const session = await auth.api.getSession({ headers: request.headers });
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!paramsValidation.success) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          details: paramsValidation.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
     }
+    const { id } = paramsValidation.data;
 
     const body = await request.json();
-    const validatedData = updateUserSchema.parse(body);
+    const bodyValidation = updateUserSchema.safeParse(body);
 
-    // Separate password from other user data
-    const { password, ...userProfileData } = validatedData;
-
-    // Update user profile info if present
-    if (Object.keys(userProfileData).length > 0) {
-      await db.update(user).set(userProfileData).where(eq(user.id, id));
+    if (!bodyValidation.success) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          details: bodyValidation.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
     }
 
-    // Update password if present
-    if (password) {
-      const hashedPassword = await hashPassword(password);
-      await db
-        .update(account)
-        .set({ password: hashedPassword })
-        .where(eq(account.userId, id));
-    }
+    const { name, image } = bodyValidation.data;
 
-    // Fetch the updated user to return
-    const [updatedUser] = await db.select().from(user).where(eq(user.id, id));
+    const [updatedUser] = await db
+      .update(usersTable)
+      .set({
+        ...(name ? { name } : {}),
+        ...(image !== undefined ? { image } : {}),
+      })
+      .where(eq(usersTable.id, id))
+      .returning({
+        id: usersTable.id,
+        name: usersTable.name,
+        email: usersTable.email,
+        image: usersTable.image,
+      });
 
     if (!updatedUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // The user object from the 'user' table is safe to return
     return NextResponse.json(updatedUser);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: "Validation failed", details: error.issues },
-        { status: 400 },
-      );
-    }
+    console.error("Error updating user:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to update user" },
       { status: 500 },
     );
   }
 }
 
-/**
- * DELETE: Remove a specific user by ID
- */
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: { id: string } },
 ) {
   try {
-    const { id } = await params;
+    const validation = paramsSchema.safeParse(params);
 
-    const session = await auth.api.getSession({ headers: request.headers });
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!validation.success) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          details: validation.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
     }
+    const { id } = validation.data;
 
     const [deletedUser] = await db
-      .delete(user)
-      .where(eq(user.id, id))
-      .returning();
+      .delete(usersTable)
+      .where(eq(usersTable.id, id))
+      .returning({ id: usersTable.id });
 
     if (!deletedUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -130,8 +146,9 @@ export async function DELETE(
 
     return NextResponse.json({ message: "User deleted successfully" });
   } catch (error) {
+    console.error("Error deleting user:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to delete user" },
       { status: 500 },
     );
   }
