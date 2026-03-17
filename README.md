@@ -1,8 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Board
+
+This is a job board application built with Next.js, bootstrapped with `create-next-app`.
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+Make sure you have Node.js installed on your machine.
+
+### Installation
+
+1.  Clone the repository to your local machine.
+
+2.  Install the project dependencies:
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    # or
+    bun install
+    ```
+
+### Environment Variables
+
+This project uses environment variables for configuration.
+
+1.  Create a `.env.local` file in the root of your project. If an `.env.example` file exists, you can copy it to get started:
+
+    ```bash
+    cp .env.example .env.local
+    ```
+
+2.  Add the necessary variables to `.env.local`. For example:
+    ```env
+    # Example variable
+    DATABASE_URL="your_database_connection_string"
+    ```
+    > **Note:** In Next.js, environment variables prefixed with `NEXT_PUBLIC_` are exposed to the browser. Be careful not to expose sensitive keys.
+
+### Running the Development Server
+
+After installing dependencies and setting up your environment variables, you can run the development server:
 
 ```bash
 npm run dev
