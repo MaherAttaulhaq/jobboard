@@ -22,8 +22,17 @@ async function main() {
     console.log("🌱 Initializing Local SQLite connection...");
     const { drizzle } = await import("drizzle-orm/better-sqlite3");
     const Database = (await import("better-sqlite3")).default;
+    const fs = await import("fs");
+    const path = await import("path");
 
-    const connectionString = process.env.DATABASE_URL || "sqlite.db";
+    const connectionString = path.resolve(
+      process.env.DATABASE_URL || "sqlite.db",
+    );
+    const dbFolder = path.dirname(connectionString);
+    if (!fs.existsSync(dbFolder)) {
+      fs.mkdirSync(dbFolder, { recursive: true });
+    }
+
     const sqlite = new Database(connectionString);
     // Correct syntax for better-sqlite3 is drizzle(client, { schema })
     db = drizzle(sqlite as any, { schema });
