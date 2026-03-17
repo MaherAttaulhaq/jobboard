@@ -1,18 +1,9 @@
 import "dotenv/config";
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
 import * as schema from "./schema";
-import { applicationsTable, jobsTable, categoriesTable } from "./schema";
 
-async function seed() {
-  console.log("Seeding database...");
 async function main() {
   const args = process.argv.slice(2);
   const isCloud = args.includes("--cloud");
-
-  const connectionString = process.env.DATABASE_URL || "sqlite.db";
-  const sqlite = new Database(connectionString);
-  const db = drizzle({ client: sqlite, schema });
   let db;
 
   if (isCloud) {
@@ -35,7 +26,7 @@ async function main() {
     const connectionString = process.env.DATABASE_URL || "sqlite.db";
     const sqlite = new Database(connectionString);
     // Correct syntax for better-sqlite3 is drizzle(client, { schema })
-    db = drizzle(sqlite, { schema });
+    db = drizzle(sqlite as any, { schema });
   }
 
   await seed(db);
@@ -72,7 +63,6 @@ async function seed(db: any) {
   ];
 
   // Insert jobs and return the created rows to get their IDs
-  const insertedJobs = await db.insert(jobsTable).values(jobs).returning();
   const insertedJobs = await db
     .insert(schema.jobsTable)
     .values(jobs)
@@ -98,7 +88,6 @@ async function seed(db: any) {
     },
   ];
 
-  await db.insert(applicationsTable).values(applications);
   await db.insert(schema.applicationsTable).values(applications);
   console.log(`Inserted ${applications.length} applications.`);
 
@@ -116,18 +105,15 @@ async function seed(db: any) {
     { name: "Human Resources" },
   ];
 
-  await db.insert(categoriesTable).values(categories).onConflictDoNothing();
   await db
     .insert(schema.categoriesTable)
     .values(categories)
     .onConflictDoNothing();
   console.log("Categories seeding complete.");
 
-  console.log("Seeding complete!");
   console.log("✅ Seeding finished successfully!");
 }
 
-seed().catch((err) => {
 main().catch((err) => {
   console.error("Seeding failed", err);
   process.exit(1);
