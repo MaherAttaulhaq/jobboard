@@ -38,26 +38,12 @@ export default function JobsPage() {
         }
         const jobsData: Job[] = await jobsResponse.json();
 
-        let categoriesData: string[] = [];
-        try {
-          const categoriesResponse = await fetch("/api/categories");
-          if (!categoriesResponse.ok)
-            throw new Error(`Status: ${categoriesResponse.status}`);
-          categoriesData = await categoriesResponse.json();
-        } catch (catError) {
-          // This is not critical, so we can just warn and continue.
-          console.warn(
-            "Could not fetch categories, falling back to derived categories.",
-            catError,
-          );
-        }
-
+        // Derive categories from the jobs data
         const derivedCategories = Array.from(
           new Set(jobsData.map((j) => j.category).filter(Boolean)),
         ) as string[];
-        setCategories(
-          categoriesData.length > 0 ? categoriesData : derivedCategories,
-        );
+        setCategories(derivedCategories);
+
         setJobs(jobsData);
       } catch (error: any) {
         console.error("Error fetching jobs:", error);
