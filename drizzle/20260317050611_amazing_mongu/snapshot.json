@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "104b2b5e-7aff-4316-8dbf-e80bcc2e0e39",
+  "id": "cac40f80-4423-43bf-bf0a-965f8d7a90d7",
   "prevIds": [
-    "ef927c03-7a9d-4057-b058-d5b90bade4f7"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -199,7 +199,7 @@
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "nameExplicit": false,
-      "name": "applications_job_id_jobs_id_fk",
+      "name": "fk_applications_job_id_jobs_id_fk",
       "entityType": "fks",
       "table": "applications"
     },
