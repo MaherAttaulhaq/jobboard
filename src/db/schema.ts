@@ -2,6 +2,9 @@ import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { relations } from "drizzle-orm/_relations";
 import { user as authUserTable } from "../../auth-schema";
 
+// Export the auth `user` table so Drizzle's schema generation can include it.
+export const user = authUserTable;
+
 export const categoriesTable = sqliteTable("categories", {
   id: int("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull().unique(),
