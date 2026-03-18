@@ -136,7 +136,7 @@ const Signup = () => {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="pl-12 bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
+                      className="pl-12 bg-gray-50 border-gray-200 focus:bg-black focus:ring-2 focus:ring-blue-500/20 focus:border-black-500 h-12 rounded-xl transition-all"
                       placeholder="jane@example.com"
                     />
                   </div>
@@ -159,8 +159,9 @@ const Signup = () => {
                         required
                         value={formData.password}
                         onChange={handleChange}
-                        className="bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
-                        placeholder="••••••••"
+                        className="bg-black border-black 
+                         focus:ring-2  h-12 rounded-xl transition-all"
+                        placeholder="Enter your password"
                       />
                     </div>
                     {fieldErrors.password && (
@@ -171,7 +172,7 @@ const Signup = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-blue-700 ml-1">
-                      Confirm
+                      Confirm Password
                     </label>
                     <Input
                       id="confirmPassword"
@@ -180,7 +181,7 @@ const Signup = () => {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       className="bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
-                      placeholder="••••••••"
+                      placeholder="Re-enter your password"
                     />
                     {fieldErrors.confirmPassword && (
                       <p className="text-xs text-red-500 font-medium mt-1 ml-1">
