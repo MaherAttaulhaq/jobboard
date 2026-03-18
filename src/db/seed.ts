@@ -124,6 +124,13 @@ async function seed(db: any) {
 }
 
 main().catch((err) => {
-  console.error("Seeding failed", err);
+  if (err.code === "SQLITE_ERROR" && err.message.includes("no such table")) {
+    console.error("\n❌ Error: Database tables do not exist.");
+    console.error(
+      "👉 Please run migrations first to create the tables:\n   npm run db:migrate\n",
+    );
+  } else {
+    console.error("Seeding failed", err);
+  }
   process.exit(1);
 });

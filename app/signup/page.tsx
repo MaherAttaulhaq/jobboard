@@ -159,8 +159,8 @@ const Signup = () => {
                         required
                         value={formData.password}
                         onChange={handleChange}
-                        className="bg-black border-black 
-                         focus:ring-2  h-12 rounded-xl transition-all"
+                        className="bg-white border-black 
+                         focus:ring-2 h-12 rounded-xl transition-all text-black"
                         placeholder="Enter your password"
                       />
                     </div>
@@ -180,7 +180,8 @@ const Signup = () => {
                       required
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      className="bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
+                      className="bg-white border-black 
+                         focus:ring-2 h-12 rounded-xl transition-all text-black"
                       placeholder="Re-enter your password"
                     />
                     {fieldErrors.confirmPassword && (
