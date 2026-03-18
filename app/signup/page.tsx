@@ -77,7 +77,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col font-sans">
       <Header />
       <main className="flex-grow flex items-center justify-center py-16 px-4">
         <div className="max-w-md w-full">
@@ -86,15 +86,15 @@ const Signup = () => {
             <div className="bg-blue-600 p-3 rounded-2xl shadow-lg shadow-blue-200 mb-4 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
               <Briefcase className="text-white h-8 w-8" />
             </div>
-            <h2 className="text-3xl font-extrabold text-blue-900 tracking-tight">
+            <h2 className="text-3xl font-extrabold text-blue-900 dark:text-gray-100 tracking-tight">
               Join JobBoard
             </h2>
-            <p className="text-gray-500 mt-2 font-medium">
+            <p className="text-gray-500 dark:text-gray-400 mt-2 font-medium">
               Create your professional profile today
             </p>
           </div>
 
-          <div className="bg-white p-8 sm:p-10 rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100">
+          <div className="bg-white dark:bg-gray-900 p-8 sm:p-10 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-black/20 border border-gray-100 dark:border-gray-800">
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -111,7 +111,7 @@ const Signup = () => {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="pl-12 bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
+                      className="pl-12 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
                       placeholder="Jane Cooper"
                     />
                   </div>
@@ -136,7 +136,7 @@ const Signup = () => {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="pl-12 bg-gray-50 border-gray-200 focus:bg-black focus:ring-2 focus:ring-blue-500/20 focus:border-black-500 h-12 rounded-xl transition-all"
+                      className="pl-12 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
                       placeholder="jane@example.com"
                     />
                   </div>
@@ -159,8 +159,7 @@ const Signup = () => {
                         required
                         value={formData.password}
                         onChange={handleChange}
-                        className="bg-white border-black 
-                         focus:ring-2 h-12 rounded-xl transition-all text-black"
+                        className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
                         placeholder="Enter your password"
                       />
                     </div>
@@ -180,8 +179,7 @@ const Signup = () => {
                       required
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      className="bg-white border-black 
-                         focus:ring-2 h-12 rounded-xl transition-all text-black"
+                      className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:bg-white dark:focus:bg-gray-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
                       placeholder="Re-enter your password"
                     />
                     {fieldErrors.confirmPassword && (
@@ -194,7 +192,7 @@ const Signup = () => {
               </div>
 
               {error && (
-                <div className="bg-red-50 text-red-600 text-sm font-bold px-4 py-3 rounded-xl border border-red-100">
+                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-bold px-4 py-3 rounded-xl border border-red-100 dark:border-red-500/20">
                   {error}
                 </div>
               )}
@@ -210,7 +208,7 @@ const Signup = () => {
                 )}
               </Button>
 
-              <p className="text-center text-sm text-gray-500 mt-6 font-medium">
+              <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6 font-medium">
                 Already have an account?{" "}
                 <Link
                   href="/login"

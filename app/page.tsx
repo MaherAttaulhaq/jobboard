@@ -49,12 +49,12 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-white text-blue-900 font-sans">
+    <div className="bg-white dark:bg-gray-950 text-blue-900 dark:text-gray-100 font-sans">
       <Header />
 
       <main>
         <motion.section
-          className="relative overflow-hidden pt-12 lg:pt-20 pb-20 lg:pb-32 bg-secondary"
+          className="relative overflow-hidden pt-12 lg:pt-20 pb-20 lg:pb-32 bg-gray-50 dark:bg-gray-900"
           data-purpose="hero-banner"
           initial="hidden"
           animate="visible"
@@ -65,16 +65,16 @@ export default function Home() {
               <div className="max-w-2xl">
                 <motion.h1 
                   variants={itemVariants}
-                  className="text-5xl lg:text-7xl font-extrabold text-blue-900 leading-tight mb-6"
+                  className="text-5xl lg:text-7xl font-extrabold text-blue-900 dark:text-white leading-tight mb-6"
                 >
                   Discover <br /> more than <br />
-                  <span className="text-blue-900 highlight-underline">
+                  <span className="text-blue-900 dark:text-white highlight-underline">
                     5000+ Jobs
                   </span>
                 </motion.h1>
                 <motion.p 
                   variants={itemVariants}
-                  className="text-lg text-slate-500 mb-10 leading-relaxed max-w-lg"
+                  className="text-lg text-slate-500 dark:text-slate-400 mb-10 leading-relaxed max-w-lg"
                 >
                   Great platform for the job seeker that searching for new
                   career heights and passionate about startups.
@@ -82,7 +82,7 @@ export default function Home() {
 
                 <motion.div 
                   variants={itemVariants}
-                  className="bg-white p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 border border-gray-100"
+                  className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 border border-gray-100 dark:border-gray-700"
                 >
                   <div className="flex-1 flex items-center px-4 border-r border-gray-100">
                     <svg
@@ -99,7 +99,7 @@ export default function Home() {
                       ></path>
                     </svg>
                     <Input
-                      className="w-full border-none focus-visible:ring-0 text-slate-700 shadow-none outline-none focus:outline-none"
+                      className="w-full border-none focus-visible:ring-0 text-slate-700 dark:text-slate-300 shadow-none outline-none focus:outline-none bg-transparent"
                       placeholder="Job title or keyword"
                       type="text"
                       value={query}
@@ -127,7 +127,7 @@ export default function Home() {
                       ></path>
                     </svg>
                     <Input
-                      className="w-full border-none focus-visible:ring-0 text-slate-700 shadow-none outline-none focus:outline-none"
+                      className="w-full border-none focus-visible:ring-0 text-slate-700 dark:text-slate-300 shadow-none outline-none focus:outline-none bg-transparent"
                       placeholder="City, state, or zip code"
                       type="text"
                       value={location}
@@ -145,7 +145,7 @@ export default function Home() {
                 </motion.div>
                 <motion.p 
                   variants={itemVariants}
-                  className="mt-4 text-sm text-slate-400"
+                  className="mt-4 text-sm text-slate-400 dark:text-slate-500"
                 >
                   Popular : UI Designer, UX Researcher, Android, Admin
                 </motion.p>
@@ -166,16 +166,16 @@ export default function Home() {
         </motion.section>
 
         <section
-          className="py-12 border-b border-gray-100 overflow-hidden"
+          className="py-12 border-b border-gray-100 dark:border-gray-800 overflow-hidden"
           data-purpose="client-logos"
         >
           <div className="max-w-7xl mx-auto px-4">
-            <p className="text-gray-400 text-sm font-medium mb-8">
+            <p className="text-gray-400 dark:text-gray-500 text-sm font-medium mb-8">
               Companies we helped grow
             </p>
             <div className="flex">
               <motion.div
-                className="flex items-center gap-16 md:gap-32 whitespace-nowrap opacity-40 grayscale"
+                className="flex items-center gap-16 md:gap-32 whitespace-nowrap opacity-40 grayscale dark:invert dark:opacity-60"
                 animate={{ x: ["0%", "-50%"] }}
                 transition={{
                   duration: 20,
@@ -206,8 +206,8 @@ export default function Home() {
         >
           <div className="max-w-7xl mx-auto px-4">
             <motion.div variants={itemVariants} className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-bold text-blue-900">
-                Explore by <span className="text-secondary-foreground underline decoration-primary/30">category</span>
+              <h2 className="text-4xl font-bold text-blue-900 dark:text-white">
+                Explore by <span className="text-blue-600 dark:text-blue-400 underline decoration-blue-600/30">category</span>
               </h2>
               <Link
                 className="text-primary font-semibold flex items-center gap-2 group"
@@ -230,8 +230,8 @@ export default function Home() {
               </Link>
             </motion.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer card-shadow bg-white dark:bg-gray-900 group">
+                <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-6 text-primary dark:text-indigo-400 group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -246,8 +246,8 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Design</h3>
-                <div className="flex items-center justify-between text-slate-400">
+                <h3 className="text-xl font-bold mb-2 dark:text-white">Design</h3>
+                <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
                   <span>235 jobs available</span>
                   <svg
                     className="w-4 h-4"
@@ -264,8 +264,8 @@ export default function Home() {
                   </svg>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer card-shadow bg-white dark:bg-gray-900 group">
+                <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-6 text-primary dark:text-indigo-400 group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -280,8 +280,8 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Sales</h3>
-                <div className="flex items-center justify-between text-slate-400">
+                <h3 className="text-xl font-bold mb-2 dark:text-white">Sales</h3>
+                <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
                   <span>756 jobs available</span>
                   <svg
                     className="w-4 h-4"
@@ -298,7 +298,7 @@ export default function Home() {
                   </svg>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="p-8 bg-primary text-white rounded-xl shadow-xl transition-all cursor-pointer hover:-translate-y-2 z-10 group">
+              <motion.div variants={itemVariants} className="p-8 bg-blue-600 text-white rounded-xl shadow-xl transition-all cursor-pointer hover:-translate-y-2 z-10 group">
                 <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-white group-hover:text-primary transition-all">
                   <svg
                     className="w-6 h-6"
@@ -332,8 +332,8 @@ export default function Home() {
                   </svg>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer card-shadow bg-white dark:bg-gray-900 group">
+                <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-6 text-primary dark:text-indigo-400 group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -348,8 +348,8 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Finance</h3>
-                <div className="flex items-center justify-between text-slate-400">
+                <h3 className="text-xl font-bold mb-2 dark:text-white">Finance</h3>
+                <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
                   <span>325 jobs available</span>
                   <svg
                     className="w-4 h-4"
@@ -367,8 +367,8 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer card-shadow bg-white dark:bg-gray-900 group">
+                <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-6 text-primary dark:text-indigo-400 group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -383,8 +383,8 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Technology</h3>
-                <div className="flex items-center justify-between text-slate-400">
+                <h3 className="text-xl font-bold mb-2 dark:text-white">Technology</h3>
+                <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
                   <span>436 jobs available</span>
                   <svg
                     className="w-4 h-4"
@@ -401,8 +401,8 @@ export default function Home() {
                   </svg>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer card-shadow bg-white dark:bg-gray-900 group">
+                <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-6 text-primary dark:text-indigo-400 group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -417,8 +417,8 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Engineering</h3>
-                <div className="flex items-center justify-between text-slate-400">
+                <h3 className="text-xl font-bold mb-2 dark:text-white">Engineering</h3>
+                <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
                   <span>542 jobs available</span>
                   <svg
                     className="w-4 h-4"
@@ -435,8 +435,8 @@ export default function Home() {
                   </svg>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer card-shadow bg-white dark:bg-gray-900 group">
+                <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-6 text-primary dark:text-indigo-400 group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -451,8 +451,8 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Business</h3>
-                <div className="flex items-center justify-between text-slate-400">
+                <h3 className="text-xl font-bold mb-2 dark:text-white">Business</h3>
+                <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
                   <span>211 jobs available</span>
                   <svg
                     className="w-4 h-4"
@@ -469,8 +469,8 @@ export default function Home() {
                   </svg>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="p-8 border border-gray-100 rounded-xl hover:border-primary transition-all cursor-pointer card-shadow bg-white group">
-                <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <motion.div variants={itemVariants} className="p-8 border border-gray-100 dark:border-gray-800 rounded-xl hover:border-blue-500 dark:hover:border-blue-500 transition-all cursor-pointer card-shadow bg-white dark:bg-gray-900 group">
+                <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg flex items-center justify-center mb-6 text-primary dark:text-indigo-400 group-hover:bg-primary group-hover:text-white transition-colors">
                   <svg
                     className="w-6 h-6"
                     fill="none"
@@ -485,8 +485,8 @@ export default function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Human Resource</h3>
-                <div className="flex items-center justify-between text-slate-400">
+                <h3 className="text-xl font-bold mb-2 dark:text-white">Human Resource</h3>
+                <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
                   <span>346 jobs available</span>
                   <svg
                     className="w-4 h-4"
@@ -515,7 +515,7 @@ export default function Home() {
           viewport={{ once: true }}
           variants={fadeIn}
         >
-          <div className="bg-primary rounded-3xl overflow-hidden flex flex-col lg:flex-row items-center border border-white/10 shadow-2xl">
+          <div className="bg-blue-600 rounded-3xl overflow-hidden flex flex-col lg:flex-row items-center border border-white/10 shadow-2xl">
             <motion.div 
               className="p-12 lg:p-20 flex-1"
               variants={containerVariants}
@@ -528,7 +528,7 @@ export default function Home() {
               </motion.p>
               <motion.div variants={itemVariants}>
                 <Button
-                  className="bg-white text-primary px-10 py-6 rounded-xl font-bold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-lg"
+                  className="bg-white text-blue-600 px-10 py-6 rounded-xl font-bold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-lg"
                   size="lg"
                 >
                   Sign Up For Free
@@ -551,7 +551,7 @@ export default function Home() {
         </motion.section>
 
         <motion.section
-          className="py-24 bg-gray-50/50"
+          className="py-24 bg-gray-50/50 dark:bg-gray-900"
           data-purpose="featured-job-listings"
           initial="hidden"
           whileInView="visible"
@@ -560,8 +560,8 @@ export default function Home() {
         >
           <div className="max-w-7xl mx-auto px-4">
             <motion.div variants={itemVariants} className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-bold text-blue-900">
-                Featured <span className="text-primary underline decoration-primary/20">jobs</span>
+              <h2 className="text-4xl font-bold text-blue-900 dark:text-white">
+                Featured <span className="text-blue-600 dark:text-blue-400 underline decoration-blue-500/20">jobs</span>
               </h2>
               <Link
                 className="text-primary font-semibold flex items-center gap-2 group"
@@ -584,22 +584,22 @@ export default function Home() {
               </Link>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
+              <motion.div variants={itemVariants} className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-100 dark:border-gray-800 card-shadow hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Revolut"
                     className="w-10 h-10 rounded"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuC72jZcyYomkObUP6qZoStFUWJWusHCu1w-d9W3Hto1M-kGkeVRnzbE9pRi8Y9DXuxUojsrdhltjj4XWaO0FLcV3XsmDSJIySXcEJ3W6Tk1aSVB7P4W2fj0plLaBdVs3rsLZH1AmffThLDwRh9KTNsXiUrAN01DTuBfOmkAs4GK1BJnnLJVzGtHa8YpN6yENKx4aGCkQPgE6SwP51eWdNscD30nXabXguJalnnMIuOX4f_YgrQj-0iREScIuWYXQevESOaeUWoJAu4"
                   />
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-xs font-bold rounded">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-xs font-bold rounded">
                     Full Time
                   </span>
                 </div>
-                <h3 className="text-lg font-bold mb-1">Email Marketing</h3>
-                <p className="text-sm text-slate-400 mb-4">
+                <h3 className="text-lg font-bold mb-1 dark:text-white">Email Marketing</h3>
+                <p className="text-sm text-slate-400 dark:text-slate-500 mb-4">
                   Revolut • Madrid, Spain
                 </p>
-                <p className="text-sm text-slate-500 line-clamp-2 mb-6">
+                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-6">
                   Revolut is looking for Email Marketing to help team ma...
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -611,22 +611,22 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
+              <motion.div variants={itemVariants} className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-100 dark:border-gray-800 card-shadow hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Dropbox"
                     className="w-10 h-10 rounded"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu2T6KImQmS1Qpt1B70lO3igt3JivZUxb9CrsSggXWpLrLFEDgSb00J3JJBuofi0K8uEK521e1nIKztlVMTnfF8-k_MB7sjmWFlGiKSuk_vpIAaEJBXiTNP5DULzSKNOwjzqZonZr3sBWzMlMLfh6pzGrIlsgaVH7KyF3miOTvH73Qz0nQa0ZffcPmLhwi4uJT4fZe-FXW11I6jJyNa9ThAD7yB2ON6kB5KI_wwFvAnXB_g2aINI2R8tmEYr0qheR5ow4idxtJrVs"
                   />
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-xs font-bold rounded">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-xs font-bold rounded">
                     Full Time
                   </span>
                 </div>
-                <h3 className="text-lg font-bold mb-1">Brand Designer</h3>
-                <p className="text-sm text-slate-400 mb-4">
+                <h3 className="text-lg font-bold mb-1 dark:text-white">Brand Designer</h3>
+                <p className="text-sm text-slate-400 dark:text-slate-500 mb-4">
                   Dropbox • San Fransisco, US
                 </p>
-                <p className="text-sm text-slate-500 line-clamp-2 mb-6">
+                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-6">
                   Dropbox is looking for Brand Designer to help the team t...
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -638,22 +638,22 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
+              <motion.div variants={itemVariants} className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-100 dark:border-gray-800 card-shadow hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Pitch"
                     className="w-10 h-10 rounded"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-ROjsssbrYogmArP_6Z8OQBqWw19b63vk8veAvbi5MPoCxSI02PB89x-CiMgAdpuBRzBwLMfkBSwggfUoummCSXu5dTFLffs23wiOFrCnFxWCyHQN4slK9_xJTV1Vj9VHn-WZmVjWiZld19Rt6JSInLruF8UP_XBN5sdg5N_jz7vzZq6ivjHodEgLVrDXl5CCLi2T8HHcf6_iPY14JBAZPI_g4USdvBR64rtQDq2e-4uz1wkieoRwxz4ZK5qOGsfpQd0LaBccy-k"
                   />
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-xs font-bold rounded">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-xs font-bold rounded">
                     Full Time
                   </span>
                 </div>
-                <h3 className="text-lg font-bold mb-1">Email Marketing</h3>
-                <p className="text-sm text-slate-400 mb-4">
+                <h3 className="text-lg font-bold mb-1 dark:text-white">Email Marketing</h3>
+                <p className="text-sm text-slate-400 dark:text-slate-500 mb-4">
                   Pitch • Berlin, Germany
                 </p>
-                <p className="text-sm text-slate-500 line-clamp-2 mb-6">
+                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-6">
                   Pitch is looking for Customer Manager to join marketing t...
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -662,22 +662,22 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-xl border border-gray-100 card-shadow hover:border-primary/30 transition-all cursor-pointer">
+              <motion.div variants={itemVariants} className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-100 dark:border-gray-800 card-shadow hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all cursor-pointer">
                 <div className="flex justify-between items-start mb-6">
                   <img
                     alt="Blinklist"
                     className="w-10 h-10 rounded"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeLTIfLIPTCRP3B65QAD3-C3W7XZDuuMbu7lt7pDZX0Th0k3T5WUdBXABhsAL3CT_95U6lvvzyb6h9jpPdljF57RiM-xe-psNFzbDpVqm1gS6_rG35YqAzm_sSB_3CK3OWtIPV1ep5KUNz1FOMuHk527p5PqgNF1HciRGgdWXPbU8sXd4u6XaPOIFPkzef9JkwZBFQc3qylJWeP-xh-jMaWdoPC7FjIQvw8-1w_NlBuRzRfg4bQi48IYZdn-OdR3NsyW-DKkDrNS4"
                   />
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-xs font-bold rounded">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-xs font-bold rounded">
                     Full Time
                   </span>
                 </div>
-                <h3 className="text-lg font-bold mb-1">Visual Designer</h3>
-                <p className="text-sm text-slate-400 mb-4">
+                <h3 className="text-lg font-bold mb-1 dark:text-white">Visual Designer</h3>
+                <p className="text-sm text-slate-400 dark:text-slate-500 mb-4">
                   Blinklist • Granada, Spain
                 </p>
-                <p className="text-sm text-slate-500 line-clamp-2 mb-6">
+                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-6">
                   Blinklist is looking for Visual Designer to help team desi...
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -700,8 +700,8 @@ export default function Home() {
         >
           <div className="max-w-7xl mx-auto px-4">
             <motion.div variants={itemVariants} className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-bold text-blue-900">
-                Latest <span className="text-primary underline decoration-primary/20">jobs open</span>
+              <h2 className="text-4xl font-bold text-blue-900 dark:text-white">
+                Latest <span className="text-blue-600 dark:text-blue-400 underline decoration-blue-500/20">jobs open</span>
               </h2>
               <Link
                 className="text-primary font-semibold flex items-center gap-2 group"
@@ -724,20 +724,20 @@ export default function Home() {
               </Link>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-blue-500/30">
                 <img
                   alt="Nomad"
                   className="w-12 h-12 rounded-lg mr-6"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-N3VqIGQoNGdKFItchbN3ncTSSqKo4U8jBoTK9ioBQfgOLXWU8Fkg7Z1_2Pya9sZ6SVBW5Yz_xIYmPyQbJz4Ii7VA5bAikCOciK7f8ARjk-oIRVe889HZC1phdEdKr21qAKIHX3vtWLmbPY1Lqb8qSFeQlpnl28FD6LtZSkGtV8SRVON0HFyocNFz25wpEC0KYaDQpNlSLq8L0C_ur2VL7wgbSLCev4-hyng9aWHCwh_IJbMT6nA-PnWIPt5CH_9MTpRrtBi0CWg"
                 />
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg">Social Media Assistant</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-bold text-lg dark:text-white">Social Media Assistant</h3>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
                     Nomad • Paris, France
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-[10px] font-bold rounded-full">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-[10px] font-bold rounded-full">
                     Full-Time
                   </span>
                   <span className="px-3 py-1 border border-yellow-200 text-yellow-600 text-[10px] font-bold rounded-full">
@@ -748,20 +748,20 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-blue-500/30">
                 <img
                   alt="Netlify"
                   className="w-12 h-12 rounded-lg mr-6"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiUF9a4C92W18EzNnzsY6QSt8Pg49RP24p2MGJBqd6thCQYbIV_mGiH8Wyn-GulLuk0b9_2JVfUxq6QpoYjfYOps8kXtlQ84WPYBiLIeb9kChucUVCoOlcO6TjoZtKLz3d8TGfaf1gK6Siz8mAuOmTMW0y-wuoVZ5fTZC8Zx2k5vBuvJaeDnAT8ZjDkH0c6FJLsadYXGgZIYLXbi9-x9bAmhZcBz_KVUSc8JPcKZz1OAqg1tJIF8MRCtLK8loYYvTyaXKe_F-M2cE"
                 />
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg">Social Media Assistant</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-bold text-lg dark:text-white">Social Media Assistant</h3>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
                     Netlify • Paris, France
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-[10px] font-bold rounded-full">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-[10px] font-bold rounded-full">
                     Full-Time
                   </span>
                   <span className="px-3 py-1 border border-yellow-200 text-yellow-600 text-[10px] font-bold rounded-full">
@@ -772,20 +772,20 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-blue-500/30">
                 <img
                   alt="Dropbox"
                   className="w-12 h-12 rounded-lg mr-6"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUNYhTbRTUBGUXFZokyRcwQYVclXqeuDg8qKQLGDYSNky1RIgsnSjKzRrsWzKWQpOcVEd218iY-yErILms8cv2aLkWpV-e2cpDBBhVoEbwQdfTQ8SykNLwMaZ3ZCC4jPjnY7YP2P4JHDG8R9lWQaskDMe5Vlo7k9piNWBuQorcouYVfRFuaNnrbLD26oj2exLszNVe5npfyho4E1mhvAnuNRuWJGR2Kgeo1yvRUDsNE_jNtCSTUPunWOjGjUZf1mrz3BfaNREdP5o"
                 />
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg">Brand Designer</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-bold text-lg dark:text-white">Brand Designer</h3>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
                     Dropbox • San Fransisco, USA
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-[10px] font-bold rounded-full">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-[10px] font-bold rounded-full">
                     Full-Time
                   </span>
                   <span className="px-3 py-1 border border-yellow-200 text-yellow-600 text-[10px] font-bold rounded-full">
@@ -796,20 +796,20 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-blue-500/30">
                 <img
                   alt="Maze"
                   className="w-12 h-12 rounded-lg mr-6"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuALNnIiJsoL4gLwgg0YqmSmQeqxCCpYsi13sCXmr0I7D5GSUSKB6xK0BvMzU-A704CaXVGQ-D9OTgYVMwKeSkaxlBayChXc9jK0Xf6jaonB0tbnqlAdrhCH-t8BzG98Nfh0TQIMat99DyQ5DjwzVsIcchWn-g_R-DR5iS8TBeP0yRPzV-q1CrqfV18NZC2utEOVJwgIfo2PEdFYJhdqEhRu1Id0OXbMW-hiHziRJvUdzSZSiIezu45wSdIYl0_Dxm6NTiikGaolitU"
                 />
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg">Brand Designer</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-bold text-lg dark:text-white">Brand Designer</h3>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
                     Maze • San Fransisco, USA
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-[10px] font-bold rounded-full">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-[10px] font-bold rounded-full">
                     Full-Time
                   </span>
                   <span className="px-3 py-1 border border-yellow-200 text-yellow-600 text-[10px] font-bold rounded-full">
@@ -820,20 +820,20 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-blue-500/30">
                 <img
                   alt="Terraform"
                   className="w-12 h-12 rounded-lg mr-6"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6jFMtLmkRSMYITFyavr69kplbzfoCwGbTmW_1j4daWlwhhADW1eATFK5jVhx9M2Fmm5A5u3CrMKUSQZTKLs9cJmowu5x-tGFf7Fzcf3DyAxHOxaQqEgpJSZ1rgT4t3UstDAcOOWiEfOabjTJhW6oDHnY5Gb7xqzf4LOD_Jt6H1QPgGphS7__7B_DXEXfgDiQlHNq61ILbcJtfAt4wxvjrAPMYi9YHJ1VAxBrwvzXfW6BW780MWsGdCcMVNxtz0I8R4SVFOjQiFyo"
                 />
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg">Interactive Developer</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-bold text-lg dark:text-white">Interactive Developer</h3>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
                     Terraform • Hamburg, Germany
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-[10px] font-bold rounded-full">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-[10px] font-bold rounded-full">
                     Full-Time
                   </span>
                   <span className="px-3 py-1 border border-yellow-200 text-yellow-600 text-[10px] font-bold rounded-full">
@@ -844,20 +844,20 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white border border-gray-100 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-primary/30">
+              <motion.div variants={itemVariants} className="flex items-center p-6 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl hover:shadow-lg transition-all cursor-pointer group hover:border-blue-500/30">
                 <img
                   alt="Udacity"
                   className="w-12 h-12 rounded-lg mr-6"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5ItMdUG5zBcdRlYILPcuKSsmjyiWEV0xZGGf6Uq_If9b1_FUWtw5rOjPprM5NZf9V07R-rx8nvXcE39-XQ-eteaW2IWv5BsmMyZXltM3igLRdnTCc1gxtXs3EA5Q3aNBAclM8JSeuoGHUKhX_z5geA6D3XuSSllHAfN9nnLflZLLlp9TDkMNW_ZvUDRAtVXLynT1jCl6VAZ6Nj9InHNETEZLKiOQbUtBg7PfZV2zgbRNNrMr9nZetxv456JyvXOVtV9dbC8uvR4M"
                 />
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg">Interactive Developer</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-bold text-lg dark:text-white">Interactive Developer</h3>
+                  <p className="text-sm text-slate-400 dark:text-slate-500">
                     Udacity • Hamburg, Germany
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <span className="px-3 py-1 bg-indigo-50 text-primary text-[10px] font-bold rounded-full">
+                  <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900/30 text-primary dark:text-indigo-400 text-[10px] font-bold rounded-full">
                     Full-Time
                   </span>
                   <span className="px-3 py-1 border border-yellow-200 text-yellow-600 text-[10px] font-bold rounded-full">

@@ -5,6 +5,7 @@ import db from "@/src/index";
 import { user, account } from "@/auth-schema";
 import { hashPassword } from "@/app/lib/password";
 import { randomUUID } from "crypto";
+import { eq } from "drizzle-orm";
 
 // Schema for validating user signup data
 const signupSchema = z.object({
@@ -57,13 +58,27 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = signupSchema.parse(body);
 
-    // 3. Manual Hashing with bcrypt
+    // 3. Check if user already exists
+    const [existingUser] = await db
+      .select()
+      .from(user)
+      .where(eq(user.email, validatedData.email))
+      .limit(1);
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: "A user with this email already exists." },
+        { status: 409 }, // 409 Conflict
+      );
+    }
+
+    // 4. Manual Hashing with bcrypt
     const hashedPassword = await hashPassword(validatedData.password);
 
     const userId = randomUUID();
     const now = new Date();
 
-    // 4. Manual Database Insertion using Drizzle
+    // 5. Manual Database Insertion using Drizzle
     const [newUser] = await db
       .insert(user)
       .values({
