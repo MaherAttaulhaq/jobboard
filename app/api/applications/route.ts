@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
-import db from "../../../src/index";
+import db from "../../../src/db/index";
 import { applicationsTable, jobsTable } from "../../../src/db/schema";
 
 export async function GET() {

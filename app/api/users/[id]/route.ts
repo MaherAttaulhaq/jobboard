@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import db from "@/src/index";
+import db from "@/src/db/index";
 import { user as usersTable } from "../../../../auth-schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";

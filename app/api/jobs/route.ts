@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import db from "@/src/index";
+import db from "@/src/db/index";
 import { jobsTable } from "@/src/db/schema";
 import { auth } from "@/app/lib/auth";
-
-
 
 const createJobSchema = z.object({
   title: z.string().min(1, "Title is required"),

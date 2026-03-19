@@ -1,9 +1,10 @@
-import { auth } from "@/app/lib/auth";
+import { auth } from "../../lib/auth";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import db from "@/src/index";
+import db from "@/src/db/index";
 import { user, account } from "@/auth-schema";
-import { hashPassword } from "@/app/lib/password";
+import { hashPassword } from "../../lib/password";
 import { randomUUID } from "crypto";
 import { eq } from "drizzle-orm";
 
@@ -41,19 +42,10 @@ export async function GET(request: Request) {
 
 /**
  * POST: Create a new user
- * Protected: Requires authentication (Admin/Manager context)
+ * Public: Allows new users to sign up
  */
 export async function POST(request: Request) {
   try {
-    // 1. Check Authentication
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    });
-
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     // 2. Validate Input
     const body = await request.json();
     const validatedData = signupSchema.parse(body);

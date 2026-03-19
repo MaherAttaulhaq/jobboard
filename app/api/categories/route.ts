@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import db from "@/src/index";
+import db from "@/src/db/index";
 import { categoriesTable } from "@/src/db/schema";
 
 export async function GET() {
