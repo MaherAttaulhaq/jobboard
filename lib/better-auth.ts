@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import db from "@/src/db/index"; // Ensure this matches your actual db export
+import db from "@/src/db/index";
 import * as schema from "@/auth-schema";
 
 export const auth = betterAuth({
@@ -10,7 +10,6 @@ export const auth = betterAuth({
       ...schema,
     },
   }),
-  // You must add this block to enable /api/auth/sign-up/email
   emailAndPassword: {
     enabled: true,
   },

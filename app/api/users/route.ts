@@ -1,10 +1,10 @@
-import { auth } from "../../lib/auth";
+import { auth } from "@/lib/better-auth";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import db from "@/src/db/index";
 import { user, account } from "@/auth-schema";
-import { hashPassword } from "../../lib/password";
+import { hashPassword } from "../../lib/password"; // Use absolute alias
 import { randomUUID } from "crypto";
 import { eq } from "drizzle-orm";
 
