@@ -3,11 +3,21 @@ import { relations } from "drizzle-orm/_relations";
 import {
   user as authUserTable,
   userRelations as authUserRelations,
+  session as authSessionTable,
+  account as authAccountTable,
+  verification as authVerificationTable,
+  sessionRelations as authSessionRelations,
+  accountRelations as authAccountRelations,
 } from "../../auth-schema";
 
 // Export the auth `user` table so Drizzle's schema generation can include it.
 export const user = authUserTable;
 export const userRelations = authUserRelations;
+export const session = authSessionTable;
+export const account = authAccountTable;
+export const verification = authVerificationTable;
+export const sessionRelations = authSessionRelations;
+export const accountRelations = authAccountRelations;
 
 export const categoriesTable = sqliteTable("categories", {
   id: int("id").primaryKey({ autoIncrement: true }),

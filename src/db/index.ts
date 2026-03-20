@@ -1,15 +1,25 @@
 import "dotenv/config";
-import { Database } from "@sqlitecloud/drivers";
-import { drizzle } from "drizzle-orm/sqlite-cloud";
+import * as schema from "./schema";
 
-const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
+let db;
 
-if (!connectionString) {
-  throw new Error(
-    "SQLITE_CLOUD_CONNECTION_STRING environment variable is not set.",
+if (process.env.SQLITE_CLOUD_CONNECTION_STRING) {
+  const { Database } = require("@sqlitecloud/drivers");
+  const { drizzle } = require("drizzle-orm/sqlite-cloud");
+
+  const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
+  const client = new Database(connectionString);
+  db = drizzle({ client, schema });
+} else {
+  const Database = require("better-sqlite3");
+  const { drizzle } = require("drizzle-orm/better-sqlite3");
+  const path = require("path");
+
+  const connectionString = path.resolve(
+    process.env.DATABASE_URL || "sqlite.db",
   );
+  const client = new Database(connectionString);
+  db = drizzle(client, { schema });
 }
 
-const client = new Database(connectionString);
-const db = drizzle({ client });
 export default db;
