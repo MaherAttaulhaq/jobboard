@@ -20,7 +20,16 @@ async function main() {
     const db = drizzle({ client });
 
     console.log("Running cloud migrations...");
-    await migrate(db, { migrationsFolder: "drizzle" });
+    try {
+      await migrate(db, { migrationsFolder: "drizzle" });
+    } catch (err: any) {
+      if (err.code === "ETIMEDOUT") {
+        console.error(
+          "❌ Connection timed out. Check your firewall and connection string.",
+        );
+      }
+      throw err;
+    }
   } else {
     const { migrate } = await import("drizzle-orm/better-sqlite3/migrator");
     const { drizzle } = await import("drizzle-orm/better-sqlite3");
