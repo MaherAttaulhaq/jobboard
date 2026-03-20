@@ -39,7 +39,7 @@ async function main() {
 
     // Ensure absolute path to avoid directory resolution issues
     const connectionString = path.resolve(
-      process.env.DATABASE_URL || "sqlite.db",
+      process.env.DB_FILE_NAME || "sqlite.db",
     );
     const dbFolder = path.dirname(connectionString);
     if (!fs.existsSync(dbFolder)) {

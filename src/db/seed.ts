@@ -1,43 +1,18 @@
 import "dotenv/config";
 import * as schema from "./schema";
 
+import { jobsTable, categoriesTable } from "./schema";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/libsql";
+
 async function main() {
-  const args = process.argv.slice(2);
-  const isCloud = args.includes("--cloud");
-  let db;
-
-  if (isCloud) {
-    console.log("🌱 Initializing SQLite Cloud connection...");
-    const { drizzle } = await import("drizzle-orm/sqlite-cloud");
-    const { Database } = await import("@sqlitecloud/drivers");
-
-    const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
-    if (!connectionString) {
-      throw new Error("SQLITE_CLOUD_CONNECTION_STRING is not set in .env");
-    }
-
-    const client = new Database(connectionString);
-    db = drizzle({ client, schema });
-  } else {
-    console.log("🌱 Initializing Local SQLite connection...");
-    const { drizzle } = await import("drizzle-orm/better-sqlite3");
-    const Database = (await import("better-sqlite3")).default;
-    const fs = await import("fs");
-    const path = await import("path");
-
-    const connectionString = path.resolve(
-      process.env.DATABASE_URL || "sqlite.db",
-    );
-    const dbFolder = path.dirname(connectionString);
-    if (!fs.existsSync(dbFolder)) {
-      fs.mkdirSync(dbFolder, { recursive: true });
-    }
-
-    const sqlite = new Database(connectionString);
-    // Correct syntax for better-sqlite3 is drizzle(client, { schema })
-    db = drizzle(sqlite as any, { schema });
-  }
-
+  const dbFileName = process.env.DB_FILE_NAME || "sqlite.db";
+  // LibSQL requires 'file:' protocol for local files
+  const url =
+    dbFileName.includes("://") || dbFileName.startsWith("file:")
+      ? dbFileName
+      : `file:${dbFileName}`;
+  const db = drizzle(url);
   await seed(db);
 }
 
