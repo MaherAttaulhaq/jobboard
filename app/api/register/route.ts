@@ -12,11 +12,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // --- YOUR SIGN-UP LOGIC GOES HERE ---
-    // This is where you will connect to your database to create a user.
-    console.log("SUCCESS: Request received at /api/register", { email, name });
-    // For now, we'll just simulate a successful sign-up.
-    // --- END OF YOUR SIGN-UP LOGIC ---
+    // --- YOUR DATABASE LOGIC GOES HERE ---
+    // 1. Validate input (e.g., password strength).
+    // 2. Check if user already exists.
+    // 3. Hash the password.
+    // 4. Create the new user in your database.
+    console.log("SUCCESS: Creating user via /api/register:", { email, name });
 
     return NextResponse.json(
       { message: "User created successfully" },

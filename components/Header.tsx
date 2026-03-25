@@ -1,12 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase, Menu, X } from "lucide-react";
+import { Briefcase, Menu, X, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = authClient.useSession();
+  const router = useRouter();
+
+  const user = session?.user;
+  const isLoggedIn = !!session;
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.push("/"); // Redirect to home page after sign out
+  };
 
   return (
     <header className="bg-white dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
@@ -41,14 +62,53 @@ const Header = () => {
             </Link>
           </nav>
           <div className="flex-1 flex items-center justify-end gap-2">
-            <div className="hidden md:flex items-center gap-2">
-              <Button variant="ghost">
-                <Link href="/login">Log in</Link>
-              </Button>
-              <Button>
-                <Link href="/signup">Sign Up</Link>
-              </Button>
-            </div>
+            {isLoggedIn && user ? (
+              <div className="hidden md:flex items-center gap-4">
+                <DropdownMenu>
+                  <DropdownMenuTrigger >
+                    <Button
+                      variant="ghost"
+                      className="relative h-10 w-10 rounded-full"
+                    >
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage
+                          src={user.image || ""}
+                          alt={user.name || ""}
+                        />
+                        <AvatarFallback>
+                          {user.name?.[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" >
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">
+                          {user.name}
+                        </p>
+                        <p className="text-xs leading-none text-gray-500 dark:text-gray-400">
+                          {user.email}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={handleSignOut}>
+                      Log out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-2">
+                <Button variant="ghost" >
+                  <Link href="/login">Log in</Link>
+                </Button>
+                <Button >
+                  <Link href="/signup">Sign Up</Link>
+                </Button>
+              </div>
+            )}
             <div className="md:hidden">
               <Button
                 variant="ghost"
@@ -85,16 +145,53 @@ const Header = () => {
               </Link>
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t border-gray-100 dark:border-gray-800">
-              <Button variant="ghost" className="w-full justify-start">
-                <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                  Log in
-                </Link>
-              </Button>
-              <Button className="w-full justify-start">
-                <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
-                  Sign Up
-                </Link>
-              </Button>
+              {isLoggedIn && user ? (
+                <>
+                  <div className="flex items-center gap-3 px-1 py-2">
+                    <Avatar className="h-9 w-9">
+                      <AvatarImage
+                        src={user.image || ""}
+                        alt={user.name || ""}
+                      />
+                      <AvatarFallback>
+                        {user.name?.[0].toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        {user.name}
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      handleSignOut();
+                    }}
+                  >
+                    Log out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start"
+                    
+                  >
+                    <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                      Log in
+                    </Link>
+                  </Button>
+                  <Button className="w-full justify-start" >
+                    <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
+                      Sign Up
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
