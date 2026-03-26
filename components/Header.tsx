@@ -21,7 +21,16 @@ const Header = () => {
   const { data: session } = authClient.useSession();
   const router = useRouter();
 
-  const user = session?.user;
+  // Define a type for the user object based on your auth-schema.ts
+  interface BetterAuthUser {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified: boolean;
+    image: string | null;
+    // Add other properties from your user schema if needed
+  }
+  const user: BetterAuthUser | null = session?.user as BetterAuthUser | null;
   const isLoggedIn = !!session;
 
   const handleSignOut = async () => {
@@ -65,23 +74,18 @@ const Header = () => {
             {isLoggedIn && user ? (
               <div className="hidden md:flex items-center gap-4">
                 <DropdownMenu>
-                  <DropdownMenuTrigger >
-                    <Button
-                      variant="ghost"
-                      className="relative h-10 w-10 rounded-full"
-                    >
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage
-                          src={user.image || ""}
-                          alt={user.name || ""}
-                        />
-                        <AvatarFallback>
-                          {user.name?.[0].toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                    </Button>
+                  <DropdownMenuTrigger>
+                    <Avatar className="h-10 w-10 cursor-pointer">
+                      <AvatarImage
+                        src={user.image || ""}
+                        alt={user.name || ""}
+                      />
+                      <AvatarFallback>
+                        {user.name?.[0].toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" >
+                  <DropdownMenuContent className="w-56" align="end">
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
@@ -101,12 +105,9 @@ const Header = () => {
               </div>
             ) : (
               <div className="hidden md:flex items-center gap-2">
-                <Button variant="ghost" >
-                  <Link href="/login">Log in</Link>
-                </Button>
-                <Button >
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
+                <Link href="/signup">
+                  <Button>Sign Up</Button>
+                </Link>
               </div>
             )}
             <div className="md:hidden">
@@ -176,20 +177,18 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start"
-                    
+                  <Link
+                    href="/login"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full"
                   >
-                    <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                    <div className="w-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 rounded-md">
                       Log in
-                    </Link>
-                  </Button>
-                  <Button className="w-full justify-start" >
-                    <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
-                      Sign Up
-                    </Link>
-                  </Button>
+                    </div>
+                  </Link>
+                  <Link href="/signup" onClick={() => setIsMenuOpen(false)} className="w-full">
+                    <Button className="w-full justify-start">Sign Up</Button>
+                  </Link>
                 </>
               )}
             </div>

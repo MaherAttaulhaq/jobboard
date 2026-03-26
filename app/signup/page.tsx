@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
@@ -20,23 +21,29 @@ export default function SignUp() {
     setError("");
 
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      await authClient.signUp.email(
+        {
+          email,
+          password,
+          name,
+          callbackURL: "/admin",
         },
-        body: JSON.stringify({ email, password, name }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // If the server returned an error, show it.
-        throw new Error(data.message || "Something went wrong!");
-      }
-
-      // On success, redirect to the home page
-      router.push("/");
+        {
+          onSuccess: () => router.push("/"),
+          onError: (ctx) => {
+            // Log the full error to help debugging
+            console.error("Signup failed:", {
+              status: ctx.error.status,
+              statusText: ctx.error.statusText,
+              message: ctx.error.message,
+            });
+            
+            // If Better Auth provides a specific message (like "User already exists"), use it.
+            // Otherwise, check if there's a status text.
+            setError(ctx.error.message || "Something went wrong!");
+          },
+        },
+      );
     } catch (err: any) {
       setError(err.message);
     } finally {
