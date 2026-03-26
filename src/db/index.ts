@@ -1,12 +1,7 @@
-import "dotenv/config";
-import { drizzle } from "drizzle-orm/libsql";
+import { Database } from '@sqlitecloud/drivers';
+import { drizzle } from 'drizzle-orm/sqlite-cloud';
 
-const dbFileName = process.env.DB_FILE_NAME || "sqlite.db";
-// LibSQL requires 'file:' protocol for local files
-const url =
-  dbFileName.includes("://") || dbFileName.startsWith("file:")
-    ? dbFileName
-    : `file:${dbFileName}`;
-
-const db = drizzle(url);
+const client = new Database(process.env.SQLITE_CLOUD_CONNECTION_STRING!);
+const db = drizzle({ client });
 export default db;
+  

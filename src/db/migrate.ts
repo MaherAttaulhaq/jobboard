@@ -22,11 +22,21 @@ async function main() {
     console.log("Running cloud migrations...");
     try {
       await migrate(db, { migrationsFolder: "drizzle" });
+      console.log("✅ Cloud migrations completed successfully!");
     } catch (err: any) {
       if (err.code === "ETIMEDOUT") {
         console.error(
           "❌ Connection timed out. Check your firewall and connection string.",
         );
+      } else if (err.message?.includes("already exists")) {
+        console.error(
+          "❌ Migration Conflict: Tables already exist in the cloud but aren't tracked in __drizzle_migrations.",
+        );
+        console.error(
+          "👉 Solution: Drop all tables in your SQLite Cloud dashboard and run this script again.",
+        );
+      } else {
+        console.error("❌ Migration error:", err.message);
       }
       throw err;
     }
@@ -50,9 +60,9 @@ async function main() {
 
     console.log("Running local migrations...");
     await migrate(db, { migrationsFolder: "drizzle" });
+    console.log("✅ Local migrations completed!");
   }
 
-  console.log("Migrations completed!");
   process.exit(0);
 }
 

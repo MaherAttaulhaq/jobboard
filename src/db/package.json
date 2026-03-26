@@ -10,7 +10,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
     "auth:generate": "better-auth generate --config ./app/lib/auth.ts --output ./auth-schema.ts",
-r    "seed": "tsx src/db/seed.ts",
+    "auth:migrate": "better-auth migrate --config ./app/lib/auth.ts",
+    "seed": "tsx src/db/seed.ts",
     "db:studio": "drizzle-kit studio",
     "seed:cloud": "tsx src/db/seed.ts --cloud"
   },
@@ -39,7 +40,7 @@ r    "seed": "tsx src/db/seed.ts",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-ig    "@better-auth/cli": "^1.5.5",
+    "@better-auth/cli": "^1.5.5",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^6.0.0",
     "@types/bcryptjs": "^2.4.6",

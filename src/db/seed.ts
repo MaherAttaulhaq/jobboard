@@ -2,17 +2,38 @@ import "dotenv/config";
 import * as schema from "./schema";
 
 import { jobsTable, categoriesTable } from "./schema";
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/libsql";
+import { eq } from "drizzle-orm"; // Keep eq for queries
 
 async function main() {
-  const dbFileName = process.env.DB_FILE_NAME || "sqlite.db";
-  // LibSQL requires 'file:' protocol for local files
-  const url =
-    dbFileName.includes("://") || dbFileName.startsWith("file:")
-      ? dbFileName
-      : `file:${dbFileName}`;
-  const db = drizzle(url);
+  const args = process.argv.slice(2);
+  const isCloud = args.includes("--cloud");
+
+  let db: any;
+
+  if (isCloud) {
+    const { drizzle } = await import("drizzle-orm/sqlite-cloud");
+    const { Database } = await import("@sqlitecloud/drivers");
+
+    const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
+    if (!connectionString) {
+      throw new Error(
+        "SQLITE_CLOUD_CONNECTION_STRING environment variable is not set for cloud seeding.",
+      );
+    }
+    const client = new Database(connectionString);
+    db = drizzle({ client });
+    console.log("Seeding cloud database...");
+  } else {
+    const { drizzle } = await import("drizzle-orm/better-sqlite3");
+    const Database = (await import("better-sqlite3")).default;
+    const path = await import("path");
+
+    const dbFileName = process.env.DB_FILE_NAME || "sqlite.db";
+    const connectionString = path.resolve(dbFileName);
+    const sqlite = new Database(connectionString);
+    db = drizzle(sqlite as any);
+    console.log("Seeding local database...");
+  }
   await seed(db);
 }
 
@@ -100,7 +121,15 @@ async function seed(db: any) {
 
 main().catch((err) => {
   if (err.code === "SQLITE_ERROR" && err.message.includes("no such table")) {
+    console.log(err);
     console.error("\n❌ Error: Database tables do not exist.");
+    console.error("   Please make sure you run the migration command first.");
+    console.error(
+      "   If you are targeting cloud database run: npm run db:migrate -- --cloud",
+    );
+    console.error(
+      "   If you are targeting local database run: npm run db:migrate",
+    );
     console.error(
       "👉 Please run migrations first to create the tables:\n   npm run db:migrate\n",
     );

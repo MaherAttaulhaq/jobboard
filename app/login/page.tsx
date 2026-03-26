@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, ArrowRight, Briefcase } from "lucide-react";
 import Link from "next/link";
-import { authClient } from "@/app/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -27,6 +28,7 @@ const LoginPage = () => {
   const [fieldErrors, setFieldErrors] = useState<
     Record<string, string[] | undefined>
   >({});
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -60,6 +62,7 @@ const LoginPage = () => {
       {
         onSuccess: () => {
           setIsLoading(false);
+          router.push("/admin");
         },
         onError: (ctx) => {
           setError(ctx.error.message || "Invalid email or password.");
@@ -137,8 +140,8 @@ const LoginPage = () => {
                       required
                       value={formData.password}
                       onChange={handleChange}
-                      className="pl-12 bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
-                      placeholder="••••••••"
+                      className="pl-12 bg-gray-50 text-black border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
+                      placeholder="Enter your password"
                     />
                   </div>
                   {fieldErrors.password && (
