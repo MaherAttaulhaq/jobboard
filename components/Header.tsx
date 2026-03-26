@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -34,8 +35,13 @@ const Header = () => {
   const isLoggedIn = !!session;
 
   const handleSignOut = async () => {
-    await authClient.signOut();
-    router.push("/"); // Redirect to home page after sign out
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/login"); // Redirect after successful sign-out
+        },
+      },
+    });
   };
 
   return (
@@ -86,18 +92,20 @@ const Header = () => {
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end">
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">
-                          {user.name}
-                        </p>
-                        <p className="text-xs leading-none text-gray-500 dark:text-gray-400">
-                          {user.email}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {user.name}
+                          </p>
+                          <p className="text-xs leading-none text-gray-500 dark:text-gray-400">
+                            {user.email}
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+                    </DropdownMenuGroup>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onSelect={handleSignOut}>
+                    <DropdownMenuItem onClick={handleSignOut}>
                       Log out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -186,7 +194,11 @@ const Header = () => {
                       Log in
                     </div>
                   </Link>
-                  <Link href="/signup" onClick={() => setIsMenuOpen(false)} className="w-full">
+                  <Link
+                    href="/signup"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full"
+                  >
                     <Button className="w-full justify-start">Sign Up</Button>
                   </Link>
                 </>

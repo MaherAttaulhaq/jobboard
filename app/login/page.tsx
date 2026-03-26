@@ -155,11 +155,17 @@ const LoginPage = () => {
                   type="checkbox"
                   checked={formData.rememberMe}
                   onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, rememberMe: e.target.checked }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      rememberMe: e.target.checked,
+                    }))
                   }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors cursor-pointer"
                 />
-                <label htmlFor="rememberMe" className="text-sm font-medium text-blue-700 cursor-pointer select-none">
+                <label
+                  htmlFor="rememberMe"
+                  className="text-sm font-medium text-blue-700 cursor-pointer select-none"
+                >
                   Remember me
                 </label>
               </div>
