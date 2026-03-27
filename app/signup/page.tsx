@@ -174,8 +174,8 @@ export default function SignUp() {
                       required
                       value={formData.password}
                       onChange={handleChange}
-                      className="pl-12 bg-gray-50 border-gray-200 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
-                      placeholder="••••••••"
+                      className="pl-12 bg-gray-50 border-gray-200 focus:bg-white text-black focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-12 rounded-xl transition-all"
+                      placeholder="Enter a strong password"
                     />
                   </div>
                   {fieldErrors.password && (

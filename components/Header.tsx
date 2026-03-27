@@ -69,12 +69,13 @@ const Header = () => {
             >
               Find Jobs
             </Link>
-            <Link
-              href="/admin"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
-            >
-              Admin
-            </Link>
+             
+              <Link
+                href="/admin"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+              >
+                Admin
+              </Link>
           </nav>
           <div className="flex-1 flex items-center justify-end gap-2">
             {isLoggedIn && user ? (
@@ -145,13 +146,15 @@ const Header = () => {
               >
                 Find Jobs
               </Link>
-              <Link
-                href="/admin"
-                className="text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Admin
-              </Link>
+              {isLoggedIn && (
+                <Link
+                  href="/admin"
+                  className="text-base font-medium text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Admin
+                </Link>
+              )}
             </nav>
             <div className="flex flex-col gap-2 pt-4 border-t border-gray-100 dark:border-gray-800">
               {isLoggedIn && user ? (
