@@ -1,5 +1,5 @@
+import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { relations } from "drizzle-orm/_relations";
 import {
   user as authUserTable,
   userRelations as authUserRelations,

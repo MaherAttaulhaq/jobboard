@@ -9,15 +9,11 @@ async function main() {
     const { drizzle } = await import("drizzle-orm/sqlite-cloud");
     const { Database } = await import("@sqlitecloud/drivers");
 
-    const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
-    if (!connectionString) {
-      throw new Error(
-        "SQLITE_CLOUD_CONNECTION_STRING environment variable is not set.",
-      );
-    }
+    const url = process.env.DATABASE_URL;
+    if (!url) throw new Error("DATABASE_URL is not set.");
 
-    const client = new Database(connectionString);
-    const db = drizzle({ client });
+    const client = new Database(url);
+    const db = drizzle(client);
 
     console.log("Running cloud migrations...");
     try {

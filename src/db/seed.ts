@@ -1,7 +1,6 @@
 import "dotenv/config";
 import * as schema from "./schema";
-
-import { jobsTable, categoriesTable } from "./schema";
+import { jobsTable, categoriesTable, applicationsTable } from "./schema";
 import { eq } from "drizzle-orm"; // Keep eq for queries
 
 async function main() {
@@ -14,14 +13,11 @@ async function main() {
     const { drizzle } = await import("drizzle-orm/sqlite-cloud");
     const { Database } = await import("@sqlitecloud/drivers");
 
-    const connectionString = process.env.SQLITE_CLOUD_CONNECTION_STRING;
-    if (!connectionString) {
-      throw new Error(
-        "SQLITE_CLOUD_CONNECTION_STRING environment variable is not set for cloud seeding.",
-      );
-    }
-    const client = new Database(connectionString);
-    db = drizzle({ client });
+    const url = process.env.DATABASE_URL;
+    if (!url) throw new Error("DATABASE_URL is not set for cloud seeding.");
+
+    const client = new Database(url);
+    db = drizzle(client);
     console.log("Seeding cloud database...");
   } else {
     const { drizzle } = await import("drizzle-orm/better-sqlite3");
@@ -93,7 +89,7 @@ async function seed(db: any) {
     },
   ];
 
-  await db.insert(schema.applicationsTable).values(applications);
+  await db.insert(applicationsTable).values(applications);
   console.log(`Inserted ${applications.length} applications.`);
 
   // User seeding has been removed.
