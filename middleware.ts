@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "@/lib/auth"; // Import your server-side auth instance
 
 export async function middleware(request: NextRequest) {
   const adminPath = "/admin";
@@ -11,12 +10,21 @@ export async function middleware(request: NextRequest) {
   const isAuthPath = pathname === "/login" || pathname === "/signup";
 
   if (isProtectedPath || isAuthPath) {
-    // Better Auth's session check on the server requires passing the headers
-    const session = await auth.api
-      .getSession({
-        headers: request.headers,
-      })
-      .catch(() => null);
+    // Check session via internal fetch call instead of importing 'auth' instance.
+    // This prevents the database driver (SQLite Cloud) from being bundled into
+    // the Edge Runtime, which causes Dynamic Code Evaluation errors.
+    const url = new URL("/api/auth/get-session", request.url);
+    const sessionResponse = await fetch(url, {
+      headers: {
+        cookie: request.headers.get("cookie") || "",
+      },
+    }).catch(() => null);
+
+    const sessionData =
+      sessionResponse && sessionResponse.ok
+        ? await sessionResponse.json()
+        : null;
+    const session = sessionData?.session;
 
     // Redirect to index (or login) if accessing admin without a session
     if (isProtectedPath && !session) {

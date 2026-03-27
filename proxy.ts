@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "@/lib/auth"; // Import your server-side auth instance
 
 export async function middleware(request: NextRequest) {
   const adminPath = "/admin";
@@ -8,10 +7,19 @@ export async function middleware(request: NextRequest) {
 
   // Check if the request is for any path under /admin
   if (request.nextUrl.pathname.startsWith(adminPath)) {
-    // Better Auth's session check on the server requires passing the headers
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    });
+    // Use fetch to check session status to avoid bundling DB drivers in Edge runtime
+    const url = new URL("/api/auth/get-session", request.url);
+    const sessionResponse = await fetch(url, {
+      headers: {
+        cookie: request.headers.get("cookie") || "",
+      },
+    }).catch(() => null);
+
+    const sessionData =
+      sessionResponse && sessionResponse.ok
+        ? await sessionResponse.json()
+        : null;
+    const session = sessionData?.session;
 
     // If no session (user is not logged in), redirect to the index page
     if (!session) {
