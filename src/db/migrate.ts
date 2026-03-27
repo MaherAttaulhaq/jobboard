@@ -9,7 +9,8 @@ async function main() {
     const { drizzle } = await import("drizzle-orm/sqlite-cloud");
     const { Database } = await import("@sqlitecloud/drivers");
 
-    const url = process.env.DATABASE_URL;
+    const url =
+      process.env.DATABASE_URL || process.env.SQLITE_CLOUD_CONNECTION_STRING;
     if (!url) throw new Error("DATABASE_URL is not set.");
 
     const client = new Database(url);
