@@ -5,5 +5,5 @@ import { drizzle } from "drizzle-orm/sqlite-cloud";
 // e.g., sqlitecloud://host.sqlite.cloud:8860/db?apikey=your_key
 const client = new Database(process.env.DATABASE_URL!);
 
-const db = drizzle(client);
+const db = drizzle({client});
 export default db;

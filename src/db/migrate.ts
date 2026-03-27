@@ -13,7 +13,7 @@ async function main() {
     if (!url) throw new Error("DATABASE_URL is not set.");
 
     const client = new Database(url);
-    const db = drizzle(client);
+    const db = drizzle({client});
 
     console.log("Running cloud migrations...");
     try {
