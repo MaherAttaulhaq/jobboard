@@ -28,7 +28,7 @@ async function main() {
     const dbFileName = process.env.DB_FILE_NAME || "sqlite.db";
     const connectionString = path.resolve(dbFileName);
     const sqlite = new Database(connectionString);
-    db = drizzle(sqlite);
+    db = drizzle({ sqlite } as any);
     console.log("Seeding local database...");
   }
   await seed(db);
