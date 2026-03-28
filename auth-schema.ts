@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm/_relations";
+import { relations } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
 
@@ -37,7 +37,9 @@ export const session = sqliteTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
   },
-  (table) => [index("session_userId_idx").on(table.userId)],
+  (table) => ({
+    userIdIdx: index("session_userId_idx").on(table.userId),
+  }),
 );
 
 export const account = sqliteTable(
@@ -67,7 +69,9 @@ export const account = sqliteTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("account_userId_idx").on(table.userId)],
+  (table) => ({
+    userIdIdx: index("account_userId_idx").on(table.userId),
+  }),
 );
 
 export const verification = sqliteTable(
@@ -85,7 +89,9 @@ export const verification = sqliteTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("verification_identifier_idx").on(table.identifier)],
+  (table) => ({
+    identifierIdx: index("verification_identifier_idx").on(table.identifier),
+  }),
 );
 
 export const userRelations = relations(user, ({ many }) => ({

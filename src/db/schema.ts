@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm/_relations";
+import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import {
   user as authUserTable,
@@ -25,40 +25,40 @@ export const categoriesTable = sqliteTable("categories", {
 });
 
 export const jobsTable = sqliteTable("jobs", {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: int("id").primaryKey({ autoIncrement: true }),
 
-  title: text().notNull(),
+  title: text("title").notNull(),
 
-  company: text().notNull(),
+  company: text("company").notNull(),
 
-  location: text().notNull(),
+  location: text("location").notNull(),
 
-  category: text(),
+  category: text("category"),
 
-  description: text(),
+  description: text("description"),
 
-  created_at: text().default("CURRENT_TIMESTAMP"),
+  created_at: text("created_at").default("CURRENT_TIMESTAMP"),
 });
 
 export const applicationsTable = sqliteTable("applications", {
-  id: int().primaryKey({ autoIncrement: true }),
+  id: int("id").primaryKey({ autoIncrement: true }),
 
-  job_id: int()
+  job_id: int("job_id")
     .notNull()
     .references(() => jobsTable.id),
 
   // Use the user table from the auth schema
   userId: text("user_id").references(() => authUserTable.id),
 
-  name: text().notNull(),
+  name: text("name").notNull(),
 
-  email: text().notNull(),
+  email: text("email").notNull(),
 
-  resume_link: text(),
+  resume_link: text("resume_link"),
 
-  cover_note: text(),
+  cover_note: text("cover_note"),
 
-  created_at: text().default("CURRENT_TIMESTAMP"),
+  created_at: text("created_at").default("CURRENT_TIMESTAMP"),
 });
 
 // Define relations
