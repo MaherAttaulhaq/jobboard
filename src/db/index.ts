@@ -1,5 +1,4 @@
-import { Database } from "@sqlitecloud/drivers";
-import { drizzle } from 'drizzle-orm/sqlite-cloud';
+import { createSQLiteCloudDrizzle } from "./sqlite-cloud";
 
 
 const connectionString =
@@ -12,7 +11,5 @@ if (!connectionString) {
 }
 
 // SQLite Cloud connection strings usually contain the apikey in the URL
-const client = new Database(connectionString);
-
-const db = drizzle({ client });
+const db = createSQLiteCloudDrizzle(connectionString);
 export default db;

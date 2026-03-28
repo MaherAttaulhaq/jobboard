@@ -1,8 +1,8 @@
 import "dotenv/config";
 import * as schema from "./schema";
 import { jobsTable, categoriesTable, applicationsTable } from "./schema";
-import { drizzle } from "drizzle-orm/sqlite-cloud";
 import { eq } from "drizzle-orm"; // Keep eq for queries
+import { createSQLiteCloudDrizzle } from "./sqlite-cloud";
 
 async function main() {
   const args = process.argv.slice(2);
@@ -11,15 +11,11 @@ async function main() {
   let db: any;
 
   if (isCloud) {
-    const { drizzle } = await import("drizzle-orm/sqlite-cloud");
-    const { Database } = await import("@sqlitecloud/drivers");
-
     const url =
       process.env.DATABASE_URL || process.env.SQLITE_CLOUD_CONNECTION_STRING;
     if (!url) throw new Error("DATABASE_URL is not set for cloud seeding.");
 
-    const client = new Database(url);
-    db = drizzle({ client });
+    db = createSQLiteCloudDrizzle(url);
     console.log("Seeding cloud database...");
   } else {
     const { drizzle } = await import("drizzle-orm/better-sqlite3");
