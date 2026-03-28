@@ -76,8 +76,18 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Fetch users (limited for safety)
-    const results = await db.select().from(user).limit(20).all();
+    // Fetch users with optional email filtering
+    const results = await db
+      .select()
+      .from(user)
+      .where(
+        validation.data.email
+          ? eq(user.email, validation.data.email)
+          : undefined,
+      )
+      .limit(20)
+      .all();
+
     return NextResponse.json(results);
   } catch (error) {
     console.error("GET /api/register error:", error);
