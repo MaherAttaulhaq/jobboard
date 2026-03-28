@@ -1,66 +1,73 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import db from "@/src/db/index";
+import db from "@/src/db";
 import { jobsTable } from "@/src/db/schema";
-import { auth } from "@/app/lib/auth";
+import { desc, eq } from "drizzle-orm";
 
-const createJobSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  company: z.string().min(1, "Company is required"),
-  location: z.string().min(1, "Location is required"),
+// Validation schema for creating a job
+const jobCreateSchema = z.object({
+  title: z.string().min(2, "Title must be at least 2 characters"),
+  company: z.string().min(2, "Company name must be at least 2 characters"),
+  location: z.string().min(2, "Location is required"),
   category: z.string().optional(),
-  description: z.string().min(1, "Description is required"),
+  description: z.string().optional(),
 });
 
-export async function GET() {
+// Validation schema for GET query parameters
+const querySchema = z.object({
+  category: z.string().optional(),
+});
+
+export async function POST(req: NextRequest) {
   try {
-    const jobs = await db.select().from(jobsTable);
-    return NextResponse.json(jobs);
+    const body = await req.json();
+    const validation = jobCreateSchema.safeParse(body);
+
+    if (!validation.success) {
+      return NextResponse.json(
+        { errors: validation.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
+
+    // Insert new job into the database
+    const newJob = await db
+      .insert(jobsTable)
+      .values(validation.data)
+      .returning()
+      .get();
+
+    return NextResponse.json(newJob, { status: 201 });
   } catch (error) {
-    console.error("Error fetching jobs:", error);
+    console.error("POST /api/jobs error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch jobs" },
-      { status: 500 },
+      { error: "Failed to create job listing" },
+      { status: 500 }
     );
   }
 }
 
-export async function POST(request: Request) {
+export async function GET(req: NextRequest) {
   try {
-    const body = await request.json();
+    const { searchParams } = new URL(req.url);
+    const category = searchParams.get("category") || undefined;
+    const validation = querySchema.safeParse({ category });
 
-    // Better Auth: Protect the route by checking for a session
-    const session = await auth.api.getSession({
-      headers: request.headers,
-    });
-
-    if (!session) {
-      return NextResponse.json(
-        { error: "Unauthorized: Authentication required" },
-        { status: 401 },
-      );
+    if (!validation.success) {
+      return NextResponse.json({ errors: validation.error.flatten().fieldErrors }, { status: 400 });
     }
 
-    // Validate request body
-    const validatedData = createJobSchema.parse(body);
+    // Fetch jobs with optional category filtering
+    const results = await db
+      .select()
+      .from(jobsTable)
+      .where(validation.data.category ? eq(jobsTable.category, validation.data.category) : undefined)
+      .orderBy(desc(jobsTable.id))
+      .all();
 
-    const [newJob] = await db
-      .insert(jobsTable)
-      .values(validatedData)
-      .returning();
-
-    return NextResponse.json(newJob, { status: 201 });
+    return NextResponse.json(results);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: "Validation failed", details: error.issues },
-        { status: 400 },
-      );
-    }
-
-    return NextResponse.json(
-      { error: "Failed to create job" },
-      { status: 500 },
-    );
+    console.error("GET /api/jobs error:", error);
+    return NextResponse.json({ error: "Failed to fetch jobs" }, { status: 500 });
   }
 }

@@ -2,10 +2,10 @@ import { Database } from "@sqlitecloud/drivers";
 import { drizzle as drizzleProxy } from "drizzle-orm/sqlite-proxy";
 import type {
   AsyncBatchRemoteCallback,
-  ProxyMigrator,
   RemoteCallback,
   SqliteRemoteDatabase,
 } from "drizzle-orm/sqlite-proxy/driver";
+import type { ProxyMigrator } from "drizzle-orm/sqlite-proxy/migrator";
 
 type Rowset = Array<Record<string, unknown>> & {
   columnsNames?: string[];
