@@ -61,7 +61,7 @@ const AdminPage = () => {
       const data = await response.json();
       setJobs(data);
     } catch (error) {
-      console.error("Error fetching jobs:", error);
+      console.error("Error fetching in the jobs:", error);
     }
   };
 
