@@ -4,6 +4,8 @@ import db from "@/src/db";
 import { jobsTable } from "@/src/db/schema";
 import { desc, eq } from "drizzle-orm";
 
+export const dynamic = 'force-dynamic';
+
 // Validation schema for creating a job
 const jobCreateSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
