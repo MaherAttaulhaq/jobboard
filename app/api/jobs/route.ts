@@ -4,7 +4,7 @@ import db from "@/src/db";
 import { jobsTable } from "@/src/db/schema";
 import { desc, eq } from "drizzle-orm";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // Validation schema for creating a job
 const jobCreateSchema = z.object({
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     if (!validation.success) {
       return NextResponse.json(
         { errors: validation.error.flatten().fieldErrors },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     console.error("POST /api/jobs error:", error);
     return NextResponse.json(
       { error: "Failed to create job listing" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -52,24 +52,39 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const category = searchParams.get("category") || undefined;
+    const category = searchParams.get("category");
+
+    // If category is "all" or empty, don't filter by category
+    const categoryFilter =
+      category && category.toLowerCase() !== "all" && category.trim() !== ""
+        ? category
+        : undefined;
+
     const validation = querySchema.safeParse({ category });
 
     if (!validation.success) {
-      return NextResponse.json({ errors: validation.error.flatten().fieldErrors }, { status: 400 });
+      return NextResponse.json(
+        { errors: validation.error.flatten().fieldErrors },
+        { status: 400 },
+      );
     }
 
     // Fetch jobs with optional category filtering
     const results = await db
       .select()
       .from(jobsTable)
-      .where(validation.data.category ? eq(jobsTable.category, validation.data.category) : undefined)
+      .where(
+        categoryFilter ? eq(jobsTable.category, categoryFilter) : undefined,
+      )
       .orderBy(desc(jobsTable.id))
       .all();
 
     return NextResponse.json(results);
   } catch (error) {
     console.error("GET /api/jobs error:", error);
-    return NextResponse.json({ error: "Failed to fetch jobs" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch jobs" },
+      { status: 500 },
+    );
   }
 }
