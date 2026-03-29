@@ -52,13 +52,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const category = searchParams.get("category");
-
-    // If category is "all" or empty, don't filter by category
-    const categoryFilter =
-      category && category.toLowerCase() !== "all" && category.trim() !== ""
-        ? category
-        : undefined;
+    const category = searchParams.get("category") || undefined;
 
     const validation = querySchema.safeParse({ category });
 
@@ -74,7 +68,9 @@ export async function GET(req: NextRequest) {
       .select()
       .from(jobsTable)
       .where(
-        categoryFilter ? eq(jobsTable.category, categoryFilter) : undefined,
+        validation.data.category
+          ? eq(jobsTable.category, validation.data.category)
+          : undefined,
       )
       .orderBy(desc(jobsTable.id))
       .all();
